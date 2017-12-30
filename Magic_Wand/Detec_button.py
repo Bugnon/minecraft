@@ -1,4 +1,4 @@
-# Authors:Masgi Blanc Ludovic
+# Authors: Albert and Ludovic
 # Date: 04.10.2017
 
 # Affiliation : Gymnase du Bugnon

@@ -15,7 +15,7 @@ import time
 mc = Minecraft.create()
 
 ## initial configurations
-antirebond_time = 0.15
+antirebond_time = 0.05
 
 ## pin numbers
 button1 = 14
@@ -66,13 +66,16 @@ button_setup('button5')
 
 while True:
     check_buttons_fct()
-    if flags['button1']==1:
+    if flags['button1']==True:
         mc.postToChat("You've pressed button1")
-    if flags['button2']==1:
+    if flags['button2']==True:
         mc.postToChat("You've pressed button2")
-    if flags['button3']==1:
+    if flags['button3']==True:
         mc.postToChat("You've pressed button3")
-    if flags['button4']==1:
+    if flags['button4']==True:
         mc.postToChat("You've pressed button4")
-    if flags['button5']==1:
+    if flags['button5']==True:
         mc.postToChat("You've pressed button5")
+
+    #print(flags['button1'],flags['button2'],flags['button3'],flags['button4'],flags['button5'])
+

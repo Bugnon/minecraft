@@ -59,6 +59,12 @@ def button_setup(nb):
 nb : str
 """
     gpio.setup(eval(nb), gpio.IN, pull_up_down=gpio.PUD_UP)
+    
+button_setup('button1')
+button_setup('button2')
+button_setup('button3')
+button_setup('button4')
+button_setup('button5')
 
 # =======================================
 # Functions

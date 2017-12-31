@@ -21,7 +21,7 @@ mc = Minecraft.create()
 # ---------------------------------------
 # Initial configurations
 # ---------------------------------------
-antirebond_time = 0.09
+antirebond_time = 0.03
 
 
 # ---------------------------------------
@@ -89,6 +89,7 @@ nb: str
     
     if (flags[nb]==' ' or flags[nb]==1 )and gpio.input(eval(nb)):          
         flags[nb]=0
+        time.sleep(antirebond_time)
         return
 
 def check_buttons_fct():

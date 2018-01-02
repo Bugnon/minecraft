@@ -21,7 +21,7 @@ mc = Minecraft.create()
 # ---------------------------------------
 # Initial configurations
 # ---------------------------------------
-antirebond_time = 0.03
+antirebond_time = 0.10
 
 
 # ---------------------------------------
@@ -41,7 +41,8 @@ button5 = 24
 #' ' = pushed
 
 flags={'button1':0,'button2':0,'button3':0,'button4':0,'button5':0}
-
+# ---------------------------------------
+time_flag={'button1':0,'button2':0,'button3':0,'button4':0,'button5':0}
 # ---------------------------------------
 # Blocks ID
 # ---------------------------------------
@@ -79,17 +80,17 @@ transform button flags :
         
 nb: str
 """
-    if  not gpio.input(eval(nb)) and flags[nb]==0:
+    if  not gpio.input(eval(nb)) and flags[nb]==0 and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):
         flags[nb]=1
-        time.sleep(antirebond_time)
+        time_flag[nb]=time.time()
         return
     if (flags[nb]== 1 or flags[nb]==' ') and not gpio.input(eval(nb)):
         flags[nb] = ' '
         return
     
-    if (flags[nb]==' ' or flags[nb]==1 )and gpio.input(eval(nb)):          
+    if (flags[nb]==' ' or flags[nb]==1 )and gpio.input(eval(nb)) and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):       
         flags[nb]=0
-        time.sleep(antirebond_time)
+        time_flag[nb]=time.time()
         return
 
 def check_buttons_fct():

@@ -1,5 +1,5 @@
 # Tutorial
-Source: https://projects.raspberrypi.org/en/projects/getting-started-with-minecraft-pi
+Source: [Getting started with Minecraft Pi](https://projects.raspberrypi.org/en/projects/getting-started-with-minecraft-pi)
 
 Clone the files from Github onto the Raspberry Pi.
 ```

@@ -1,9 +1,12 @@
 # Tutorial
 Source: https://projects.raspberrypi.org/en/projects/getting-started-with-minecraft-pi
 
-Clone the files from Github, change into the directory, and run the Python code.
+Clone the files from Github.
 ```
 git clone https://github.com/Bugnon/minecraft
+```
+Change into the _tutorial_ directory, and run the Python code.
+```
 cd minecraft/tutorial
 python3 hello.py
 ```

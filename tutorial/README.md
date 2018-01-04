@@ -29,3 +29,12 @@ Asks in a menu loop for the material (rock, grass, soil) and places a block in f
 
 ## setBlocks.py
 Places a 7x7-block rock platform beneath the player. A 2-block wall of the same material surrounds the platform.
+
+## trace.py
+Leaves a trace of flowers behind if walking on grass, otherwise the block below the player is turned into grass.
+
+## tnt.py
+Creates a 10x10x10 block of TNT.
+
+## lava.py
+Lava flows for 20 seconds from an elevated position. Thereafter water flows on top of it for 4 seconds. This transforms the lava into rock.

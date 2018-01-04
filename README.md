@@ -17,6 +17,16 @@ Place common source code into files
 * weather
 
 ## Installation
+Start Minecraft by 
+* enter `minecraft-pi` in the terminal.
+* click on **Start Game**
+* click on **Create New**
+* press `tab` to release focus from Minecraft
+
+In terminal
+```
+git clone -v https://github.com/Bugnon/minecraft
+```
 
 ## Usage
 

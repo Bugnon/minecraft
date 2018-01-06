@@ -1,11 +1,10 @@
 ## Author: Raphael Holzer
 ## Organisation: Gymnase du Bugnon
 ## Date: 5. 1. 2018
-## File: minecraft_move.py
+## File: minecraft_build.py
 
-##This project uses the Sense HAT joystick to select among four structures
-##to create within Minecraft (tunnel, house, garden, snow).
-
+## This project uses the Sense HAT joystick to select among four structures
+## to create within Minecraft (tunnel, house, garden, snow).
 
 # Import modules
 from sense_hat import SenseHat
@@ -51,7 +50,6 @@ def garden(d=4):
     
     d-=1
     mc.setBlocks(x-d, y, z-d, x+d, y, z+d, block.FLOWER_YELLOW)
-    
     
 
 def house(d=5, h=4):

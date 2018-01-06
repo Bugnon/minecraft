@@ -6,4 +6,5 @@ from mcpi import minecraft
 
 mc = minecraft.Minecraft.create()
 
+# Writing to the Minecraft chat
 mc.postToChat("Hello world")

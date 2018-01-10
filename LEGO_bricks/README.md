@@ -16,13 +16,13 @@ C’est un projet que nous faisons pour le cours d’informatique de notre gymna
 
 # English
 
-Our project is a prgramme that recreate a **LEGO** creation inside minecraft. For that, it takes pictures of the structure from the top. We use the V2 camera of th **Raspberry Pi**. The programme is written in python. We're using the *OpenCV* Library to get the image taken with the camera and interpret it.
+Our project is a prgram that recreates a **LEGO** creation inside minecraft. For that, it takes pictures of the structure from the top. We use the V2 camera of the **Raspberry Pi**. The program is written in python. We're using the *OpenCV* Library to get the image taken with the camera and interpret it.
 
 ## Tutorial
 
-To use the programm, there's some steps to follow :
-1) The structure in LEGO must be built layer by layer. Starting from bottom to top.
-2) After a layer is done, the user must press the button to inform the programm it's done.
-3) Bricks with the same color shouldt be place ond on top of the other.
+To use the program, there are steps to follow :
+1) The structure in LEGO must be built layer by layer. Starting from the bottom to the top.
+2) After a layer is done, the user must press the button to inform the program it's done.
+3) Bricks with the same color shouldn't be place on top of each other.
 
-This is a project we´re making for highschool as students.
+This is a project we're making for highschool as students.

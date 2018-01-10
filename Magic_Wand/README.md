@@ -1,5 +1,5 @@
-## Magic wand
-#by Albert Guedj and Ludovic Blanc
+## Magic wand##
+#by Albert Guedj and Ludovic Blanc#
 
 *What does it do ?*
 It creates different structures in minecraft.pi

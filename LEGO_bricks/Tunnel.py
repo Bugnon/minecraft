@@ -17,7 +17,7 @@ def tunnel(width, height, length):
 	
 	px, py, pz = mc.player.getPos()
 	
-	angle = mc.player.getPos().getRotation()
+	angle = mc.player.getRotation()
 	#Length
 	for i in range(length):
 		#width

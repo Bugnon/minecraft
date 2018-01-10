@@ -8,7 +8,7 @@ It creates different structures in minecraft.pi
 
 *How does it work ?*
 
-when the wand with a metal piece touches another piece of metal on the box it calls a function depending whice piece we touched
+when the wand with a metal piece touches another piece of metal on the box it calls a function depending which piece we touched
 
 
 *Are the functions always similar ?*

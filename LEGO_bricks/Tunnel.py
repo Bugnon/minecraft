@@ -24,7 +24,7 @@ def tunnel(width, height, length):
 		for j in range(width*2+1):
 			#Height
 			for y in range(height):
-				if angle >= 315 or angle <= 45 :
+				if angle >= 315 or angle <= 45:
 					setBlock(px+i, py+y, pz+j-width, 0)
 				elif angle >= 45 and angle <= 135:
 					setBlock(px+j-width, py+y, pz+i, 0)
@@ -32,4 +32,4 @@ def tunnel(width, height, length):
 					setBlock(px-i, py+y, pz+j-width, 0)
 				elif angle >= 225 and angle <= 315:
 					setBlock(px+j-width, py+y, pz-i, 0)
-tunnel(2, 15)
+tunnel(2, 6, 15)

@@ -20,7 +20,7 @@ def house(length, height, width, wallBlock, groundBlock, roofBlock):
 	px, py, pz = mc.player.getPos()
 	
 	py=py-1
-	px=px - float(length)/2)
+	px=px - float(length)/2
 	
 	#ground
 	mc.setBlocks(px, py, pz, px+length-1, py, pz+width, groundBlock)
@@ -49,8 +49,8 @@ def house(length, height, width, wallBlock, groundBlock, roofBlock):
 			if x < float(length)/2:
 				h=h+1
 			if x >=1 and x <= length+1:
-				mc.setBlocks(px+x, py+1, pz+z, px+x, py+h, pz+z, wallBlock)
+				mc.setBlocks(px+x, py+height+1, pz+z, px+x, py+height+h, pz+z, wallBlock)
 			
-			mc.setBlock(px+x, py+h, pz+z, roofBlock)
+			mc.setBlock(px+x, py+height+h, pz+z, roofBlock)
 	
 house(5, 5, 7, 5, 43, 45)

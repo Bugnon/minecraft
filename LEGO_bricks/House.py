@@ -33,7 +33,7 @@ def house(length, height, width, wallBlock, groundBlock, roofBlock):
 					mc.setBlock(px+x, py+y, pz+z, wallBlock)
 	#door
 	mc.setBlock(int(px + float(length)/2), py+1, pz, 64, 0)
-	mc.setBlock(int(px + float(length)/2), py+2, pz, 64, 0)
+	mc.setBlock(int(px + float(length)/2), py+2, pz, 64, 8)
 	
 	#window
 	mc.setBlocks(px, py+2, int(pz+float(width)/2)-1, px, py+2, int(pz+float(width)/2)+1, 102)
@@ -49,8 +49,8 @@ def house(length, height, width, wallBlock, groundBlock, roofBlock):
 			if x < float(length)/2:
 				h=h+1
 			if x >=1 and x <= length+1:
-				mc.setBlocks(px+x, py+height, pz+z, px+x, py+height+h, pz+z, wallBlock)
+				mc.setBlocks(px+x, py+height-1, pz+z, px+x, py+height+h-1, pz+z, wallBlock)
 			
-			mc.setBlock(px+x, py+height+h, pz+z, roofBlock)
+			mc.setBlock(px+x, py+height+h-1, pz+z, roofBlock)
 	
-house(5, 5, 7, 5, 43, 45)
+house(5, 4, 7, 5, 43, 45)

@@ -1,4 +1,4 @@
-##Author: Gabriel Fürbringer
+##Author: Gabriel Furbringer
 ##Organisation: Gymnase du Bugnon
 ##Date:10.01.18
 

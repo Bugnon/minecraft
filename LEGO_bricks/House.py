@@ -20,7 +20,7 @@ def house(length, height, width, wallBlock, groundBlock, roofBlock):
 	px, py, pz = mc.player.getPos()
 	
 	py=py-1
-	px=px - float(length)/2)
+	px=px - float(length)/2
 	
 	#ground
 	mc.setBlocks(px, py, pz, px+length-1, py, pz+width, groundBlock)

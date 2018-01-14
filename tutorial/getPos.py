@@ -1,6 +1,6 @@
-##Author: Raphael Holzer
-##Organisation: Gymnase du Bugnon
-##Date: 4. 1. 2018
+"""
+    writes the current player position to console and Minecraft chat.
+"""
 
 from mcpi import minecraft
 
@@ -10,3 +10,4 @@ mc.postToChat("Get position")
 pos = mc.player.getPos()
 print(pos)
 mc.postToChat(pos)
+

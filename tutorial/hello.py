@@ -1,7 +1,7 @@
-##Author: Raphael Holzer
-##Organisation: Gymnase du Bugnon
-##Date: 4. 1. 2018
-    
+"""
+    Write "Hello world" to the Minecraft chat.
+"""
+
 from mcpi import minecraft
 
 mc = minecraft.Minecraft.create()

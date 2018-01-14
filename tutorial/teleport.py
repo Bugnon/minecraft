@@ -1,3 +1,7 @@
+"""
+    Jump 20 units into the air.
+"""
+
 from mcpi import minecraft
 
 mc = minecraft.Minecraft.create()

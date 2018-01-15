@@ -6,20 +6,18 @@ from mcpi import minecraft
 
 mc = minecraft.Minecraft.create()
 
-def tunnel(width, height, length):
+def tunnel(width, height, length, angle):
 	
 	"""
-	Create a tunnel at the player's current position in the direction he's facing :
+	Create a tunnel at the player's current position in the given direction :
 		- width : The width of the tunnel (from the center to the side)
 		- height : The height of the tunnel
 		- length : The length of the tunnel
+		- angle : The direction
 	"""
 	
 	px, py, pz = mc.player.getPos()
 	
-	#should work but isn't
-	#angle = mc.player.getRotation()
-	angle = 0
 	#Length
 	for i in range(length):
 		#width
@@ -34,4 +32,4 @@ def tunnel(width, height, length):
 					mc.setBlock(px-i, py+y, pz+j-width, 0)
 				elif angle >= 225 and angle <= 315:
 					mc.setBlock(px+j-width, py+y, pz-i, 0)
-tunnel(2, 6, 15)
+tunnel(2, 6, 15, 0)

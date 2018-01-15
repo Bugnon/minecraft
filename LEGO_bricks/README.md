@@ -41,4 +41,22 @@ We've create 5 files to generate things in minecraft :
         - groundBlock : The block used to make the ground
         - roofBlock : The block used to make the roof)
 ![House](pictures/House.jpg)
-		
+
+## Tunnel 
+	The function `tunnel(width, height, length, angle)` create a tunnel at the player's current position in the given direction :
+		- width : The width of the tunnel (from the center to the side)
+		- height : The height of the tunnel
+		- length : The length of the tunnel
+		- angle : The direction
+![Tunnel](picutres/Tunnel.jpg)
+
+## Garden
+	The file `Garden.py` generte a garden like this one :
+	
+![Garden](pictures/Garden.py)
+
+## MondePlat
+	The file MondePlat.py clear the minecraft world to get a flat map.
+
+## Mur
+	The file Mur.py generates a wall all around the player.

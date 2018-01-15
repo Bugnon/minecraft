@@ -32,7 +32,7 @@ This is a project we're making for highschool as students.
 We've create 5 files to generate things in minecraft :
 
 ## House
-	The function `house(length, height, width, wallBlock, secondaryWall, groundBlock, roofBlock)` create a house at the player's current position with the given arguments :
+The function `house(length, height, width, wallBlock, secondaryWall, groundBlock, roofBlock)` create a house at the player's current position with the given arguments :
         - length : the length of the house
         - height : the height of the house (Without the roof)
         - width : the width of the house
@@ -43,7 +43,7 @@ We've create 5 files to generate things in minecraft :
 ![House](pictures/House.jpg)
 
 ## Tunnel 
-	The function `tunnel(width, height, length, angle)` create a tunnel at the player's current position in the given direction :
+The function `tunnel(width, height, length, angle)` create a tunnel at the player's current position in the given direction :
 		- width : The width of the tunnel (from the center to the side)
 		- height : The height of the tunnel
 		- length : The length of the tunnel
@@ -51,12 +51,12 @@ We've create 5 files to generate things in minecraft :
 ![Tunnel](pictures/Tunnel.jpg)
 
 ## Garden
-	The file `Garden.py` generte a garden like this one :
+The file `Garden.py` generte a garden like this one :
 	
 ![Garden](pictures/Garden.jpg)
 
 ## MondePlat
-	The file MondePlat.py clear the minecraft world to get a flat map.
+The file `MondePlat.py` clear the minecraft world to get a flat map.
 
 ## Mur
-	The file Mur.py generates a wall all around the player.
+The file `Mur.py` generates a wall all around the player.

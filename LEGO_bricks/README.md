@@ -26,3 +26,19 @@ To use the program, there are steps to follow :
 3) Bricks with the same color shouldn't be place on top of each other.
 
 This is a project we're making for highschool as students.
+
+# Generating Functions
+
+We've create 5 files to generate things in minecraft :
+
+## House
+	The function `house(length, height, width, wallBlock, secondaryWall, groundBlock, roofBlock)` create a house at the player's current position with the given arguments :
+        - length : the length of the house
+        - height : the height of the house (Without the roof)
+        - width : the width of the house
+		- secondaryWall : The wall borders (pillars)
+        - wallBlock : The block used to make the wall
+        - groundBlock : The block used to make the ground
+        - roofBlock : The block used to make the roof)
+![House](pictures/House.jpg)
+		

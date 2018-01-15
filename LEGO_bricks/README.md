@@ -48,12 +48,12 @@ We've create 5 files to generate things in minecraft :
 		- height : The height of the tunnel
 		- length : The length of the tunnel
 		- angle : The direction
-![Tunnel](picutres/Tunnel.jpg)
+![Tunnel](pictures/Tunnel.jpg)
 
 ## Garden
 	The file `Garden.py` generte a garden like this one :
 	
-![Garden](pictures/Garden.py)
+![Garden](pictures/Garden.jpg)
 
 ## MondePlat
 	The file MondePlat.py clear the minecraft world to get a flat map.

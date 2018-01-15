@@ -33,21 +33,21 @@ We've create 5 files to generate things in minecraft :
 
 ## House
 The function `house(length, height, width, wallBlock, secondaryWall, groundBlock, roofBlock)` create a house at the player's current position with the given arguments :
-        - length : the length of the house
-        - height : the height of the house (Without the roof)
-        - width : the width of the house
-		- secondaryWall : The wall borders (pillars)
-        - wallBlock : The block used to make the wall
-        - groundBlock : The block used to make the ground
-        - roofBlock : The block used to make the roof)
+- length : the length of the house
+- height : the height of the house (Without the roof)
+- width : the width of the house
+- secondaryWall : The wall borders (pillars)
+- wallBlock : The block used to make the wall
+- groundBlock : The block used to make the ground
+- roofBlock : The block used to make the roof)
 ![House](pictures/House.jpg)
 
 ## Tunnel 
 The function `tunnel(width, height, length, angle)` create a tunnel at the player's current position in the given direction :
-		- width : The width of the tunnel (from the center to the side)
-		- height : The height of the tunnel
-		- length : The length of the tunnel
-		- angle : The direction
+- width : The width of the tunnel (from the center to the side)
+- height : The height of the tunnel
+- length : The length of the tunnel
+- angle : The direction
 ![Tunnel](pictures/Tunnel.jpg)
 
 ## Garden

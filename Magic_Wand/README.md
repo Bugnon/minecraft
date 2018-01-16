@@ -29,13 +29,13 @@ You can write to us and it can probably help us to have other ideas!!
 
 ## Explaination of functions
 ### Midas.py 
-Midas takes every blocks except air one and transforms them into Gold.
+Midas transforms all blocks except air into Gold.
 ![Midas](Pictures/Midas.jpg)
 
 ### Mine.py 
-Mine make a mine in front of the player.
+A mine in front of the player is created
 ![Mine](Pictures/The_Mine.jpg)
 
 ### House.py
-House makes an House...
+An house is created
 ![House](Pictures/House.jpg)

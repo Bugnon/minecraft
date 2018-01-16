@@ -3,20 +3,28 @@ mc=Minecraft.create()
 xp,yp,zp=mc.player.getTilePos()
 
 def airx(x,y):
-    mc.setBlocks(x,y,zp,x,y+2,zp,0) #set air on x axis
+    """Set air on x axis
+    """
+    mc.setBlocks(x,y,zp,x,y+2,zp,0)
 
 
 def airz(z,y):
-    mc.setBlocks(xp,y,z,xp,y+2,z,0) #set air on z axis
+    """ Set air on z axis
+    """
+    mc.setBlocks(xp,y,z,xp,y+2,z,0)
 
 
 def isAirx(x,y):
-    if mc.getBlock(x,y,zp) == 0: #check air on x axis
+    """ Check air on x axis
+    """
+    if mc.getBlock(x,y,zp) == 0:
         return True
     else:
         return False
 
 def isAirz(z,y):
+    """Check air on z axis
+    """
     if mc.getBlock(xp,y,z) == 0: #check air on z axis
         return True
     else:
@@ -26,6 +34,8 @@ def isAirz(z,y):
     
 
 def Mine(x,y,z,direction,size):
+    """Create a Mine descending with given size
+    """
     if size >= yp+50: # in order not to reach bedrock
         mc.postToChat("it is too big")
     if direction == "North":

@@ -1,19 +1,5 @@
 # minecraft
-Minecraft framework for projects with the Raspberry Pi using the GPIO.
-
-## Description
-
-## Table of contents
-- [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-
-
-Place common source code into files
-* buildings
-* tunnels
-* bridges
-* weather
+Minecraft framework for projects with the Raspberry Pi using the GPIO and OpenCV with the Raspberry Pi camera.
 
 ## Installation
 Start Minecraft by 
@@ -28,10 +14,14 @@ git clone -v https://github.com/Bugnon/minecraft
 ```
 
 ## Virtual environment for OpenCV
-The RPi.GPIO module needs to be re-installed for the virtual environment (py3cv3). Type the following command into the console
+The RPi.GPIO module needs to be re-installed for the virtual environment (py3cv3). Type the following command into the console:
 ```
 (py3cv3) pi@raspberrypi:~ $ pip3 install RPi.GPIO
 Collecting RPi.GPIO
 ...
 Successfully installed RPi.GPIO-0.6.3
+```
+Furthermore it is necessary to re-install the `mcpi` module. Unfortunately it cannot be found on the on the PyPI (Python Package Index), which would make it easy to be installed with `pip`. However it comes preinstalled on the Raspberry Pi. Use the copy command: 
+```
+cp -R /usr/lib/python3/dist-packages/mcpi /home/pi/.virtualenvs/py3cv3/lib/python3.4/site-packages
 ```

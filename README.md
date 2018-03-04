@@ -7,8 +7,7 @@ Minecraft framework for projects with the Raspberry Pi using the GPIO.
 - [Description](#description)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Credits](#credits)
-- [Licence](#licence)
+
 
 Place common source code into files
 * buildings
@@ -28,8 +27,11 @@ In terminal
 git clone -v https://github.com/Bugnon/minecraft
 ```
 
-## Usage
-
-## Credits
-
-## Licence
+## Virtual environment for OpenCV
+The RPi.GPIO module needs to be re-installed for the virtual environment (py3cv3). Type the following command into the console
+```
+(py3cv3) pi@raspberrypi:~ $ pip3 install RPi.GPIO
+Collecting RPi.GPIO
+...
+Successfully installed RPi.GPIO-0.6.3
+```

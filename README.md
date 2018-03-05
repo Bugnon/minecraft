@@ -25,3 +25,8 @@ Furthermore it is necessary to re-install the `mcpi` module. Unfortunately it ca
 ```
 cp -R /usr/lib/python3/dist-packages/mcpi /home/pi/.virtualenvs/py3cv3/lib/python3.4/site-packages
 ```
+
+## Taking screenshots from Minecraft
+http://www.stuffaboutcode.com/2016/03/raspberry-pi-take-screenshot-of.html
+
+Install `raspi2png`

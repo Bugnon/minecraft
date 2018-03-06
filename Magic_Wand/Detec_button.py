@@ -8,7 +8,7 @@
 # ---------------------------------------
 # Modules importations
 # ---------------------------------------
-from  mcpi.minecraft import Minecraft
+##from  mcpi.minecraft import Minecraft
 
 import RPi.GPIO as gpio
 import time

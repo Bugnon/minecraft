@@ -12,8 +12,9 @@ def house(length, height, width, wallBlock, secondaryWall, groundBlock, roofBloc
     """
     Create a house at the player's current position with the given arguments :
         - length : the length of the house
-        - height : the height of the house (Without the roof
+        - height : the height of the house (Without the roof)
         - width : the width of the house
+		- secondaryWall : The wall borders (pillars)
         - wallBlock : The block used to make the wall
         - groundBlock : The block used to make the ground
         - roofBlock : The block used to make the roof

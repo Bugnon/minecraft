@@ -9,3 +9,4 @@ x, y, z = p.getPos()
 mc.postToChat("pretty world")
 
 mc.setBlocks(256,0,256,-256,256,-256,0)
+mc.setBlocks256, 0, 256, -256, 0, -256, 2)

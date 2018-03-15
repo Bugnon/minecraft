@@ -68,4 +68,4 @@ x,y,z,length,width,height : int
 
 
 
-house(xp,yp,zp,6,8,7)
+house(xp,yp,zp,7,7,7)

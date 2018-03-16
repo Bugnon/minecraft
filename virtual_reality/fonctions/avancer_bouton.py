@@ -5,9 +5,6 @@ import RPi.GPIO as gpio
 mc = Minecraft.create()
 x, y, z = mc.player.getPos()
 
-
-
-    
 buttonL = 14
 buttonR = 15
 
@@ -24,19 +21,21 @@ while True:
     right = gpio.input(buttonR)
 
     x,y,z = mc.player.getPos()
-    x,y = pyautogui.position()
-    
-    
+
     if not left and left0:
-        pyautogui.moveTo(10, -100)
+	    pyautogui.keyDown('w')
     if left and not left0:
-        pass
+	    pyautogui.keyUp('w')
+		
+
     left0 = left
-    
+
     if not right and right0:
-        pyautogui.moveTo (-10, 0)
+	    pyautogui.keyDown('w')
     if right and not right0:
-        pass
+	    pyautogui.keyUp('w')
 		
 		
     right0 = right
+
+

@@ -14,11 +14,11 @@ gpio.setup(buttonL, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonR, gpio.IN, pull_up_down=gpio.PUD_UP)
     
 left0 = False
-right0 = False
+R0 = False
 
 while True:
     left = gpio.input(buttonL)
-    right = gpio.input(buttonR)
+    R = gpio.input(buttonR)
 
     x,y,z = mc.player.getPos()
 
@@ -30,12 +30,46 @@ while True:
 
     left0 = left
 
-    if not right and right0:
+    
+    if not R and R0:
 	    pyautogui.keyDown('w')
-    if right and not right0:
+    if R and not R0:
 	    pyautogui.keyUp('w')
 		
 		
-    right0 = right
+    R0 = R
+    
+    
+    
+    
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

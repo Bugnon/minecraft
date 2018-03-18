@@ -25,13 +25,13 @@ while True:
     
     
     if not left and left0:
-        pyautogui.moveTo(-100, -1000000000000)
+        pyautogui.moveTo(-0.1, -0.1)
     if left and not left0:
         pass
     left0 = left
     
     if not right and right0:
-        pyautogui.moveTo (-10, 0)
+        pyautogui.moveTo (100, -450)
     if right and not right0:
         pass
 		

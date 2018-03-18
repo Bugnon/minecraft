@@ -20,15 +20,16 @@ while True:
     left = gpio.input(buttonL)
     right = gpio.input(buttonR)
 
-    
+    n = 1
+
     if not left and left0:
         x, y, z = mc.player.getPos()
-        mc.setBlocks(x+1, y, z, x+1 ,y, z, 1)
+        mc.setBlocks(x+1, y, z, x+1 ,y, z, n)
 
     left = left0
     
     if not right and right0:
         x, y, z = mc.player.getPos()
-        mc.setBlocks(x, y, z+1, x, y, z+1, 1)
+        mc.setBlocks(x, y, z+1, x, y, z+1, n)
         
     right = right0

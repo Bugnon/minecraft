@@ -16,9 +16,9 @@ camera.resolution = (320, 240)
 camera.framerate = 32
 rawCapture = PiRGBArray(camera, size=(320, 240))
 time.sleep(1)
-g = camera.awb_gains
-camera.awb_mode = 'off'
-camera.awb_gains = g
+##g = camera.awb_gains
+##camera.awb_mode = 'off'
+##camera.awb_gains = g
 
 
 #inspired from https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/        
@@ -33,20 +33,30 @@ def detect_color(img, lower, upper):
     output = cv2.bitwise_and(img, img, mask = mask)
     cv2.imshow("Mask", mask)
     cv2.imshow("Detect color", np.hstack([img, output]))
-    print(np.average(mask))
+    
+    LU = mask[0:120,0:120]
+    LD = mask[120:240,0:120]
+    Mid = mask[0:240,120:200]
+    RU = mask[0:120,240:]
+    RD = mask[120:240,240:]
+    
+    regions =[LU, LD, Mid, RU, RD]
+    for region in regions:
+        print(np.average(region)>40, end=",")
+    print()
 
-def get_center(mask):
-    """ Calculate the center position (x, y) of the white pixels"""
-    (w, h) = mask.shape
-    center_x = 0
-    center_y = 0
-    for x in range(w):
-        for y in range(h):
-            if mask[x, y] == 255:
-                center_x += x
-                center_y += y
+##def get_center(mask):
+##    """ Calculate the center position (x, y) of the white pixels"""
+##    (w, h) = mask.shape
+##    center_x = 0
+##    center_y = 0
+##    for x in range(w):
+##        for y in range(h):
+##            if mask[x, y] == 255:
+##                center_x += x
+##                center_y += y
                 
-    return (center_x/w/255, center_y/h/255)
+##    return (center_x/w/255, center_y/h/255)
 
 def detec(color,img):
     """Detect if there is a BLUE or RED object in the image
@@ -97,7 +107,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     # grab the raw NumPy array representing the image
     frame = f.array   
 
-    frameClone = frame.copy()
+    frameClone = cv2.flip(frame.copy(),1)
     #All frames are separated
     Left= frameClone[0:240,0:120]
     LU=Left[0:120,0:120]
@@ -132,11 +142,13 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     All[119:122,0:119]=(0,0,255)
     All[119:122,202:320]=(0,0,255)
 
-    lower = [0, 0, 60]
-    upper = [80, 80, 255]
-    detect_color(frameClone, lower, upper)
+    lowerR = [0, 0, 60]
+    upperR = [50, 60, 255]
+    lowerB = [0, 0, 60]
+    upperB = [80, 80, 255]
+    detect_color(frameClone, lowerR, upperR)
     
-    cv2.imshow("Image",frameClone)
+    cv2.imshow("All", All)
 
     rawCapture.truncate(0)
 

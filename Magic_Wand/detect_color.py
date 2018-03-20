@@ -44,26 +44,26 @@ def detec(color,img):
     (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     #After 5sec detection the function return True
     t0=time.time()
-    while len(cnts)>=1:
-        t1=time.time()
-        if t1-t0>=5:
-            return True
+##    while len(cnts)>=1:
+##        t1=time.time()
+##        if t1-t0>=5:
+##            return True
 
 
-def PaintAndReturn(color,img):
-    """Paint image RED or BLUE if an object of same color is detected
-"""
-    global v
-    if color=="RED":
-        c=(0,0,255)
-        m="R"
-    if color=="BLUE":
-        c=(255,0,0)
-        m="B"
-    if detec(color,img):
-        img[0:240,0:120]=c
-        v=str(img)+m
-        return v
+##def PaintAndReturn(color,img):
+##    """Paint image RED or BLUE if an object of same color is detected
+##"""
+##    global v
+##    if color=="RED":
+##        c=(0,0,255)
+##        m="R"
+##    if color=="BLUE":
+##        c=(255,0,0)
+##        m="B"
+##    if detec(color,img):
+##        img[0:240,0:120]=c
+##        v=str(img)+m
+##        return v
 
 
         
@@ -83,7 +83,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     RD=Right[120:240,0:120]
 
 
-
+    detec("RED",LD)
 # Don't work when all functions are used at same time
 ##    PaintAndReturn("RED",LD)
 ##    PaintAndReturn("RED",LU)

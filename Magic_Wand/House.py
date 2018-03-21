@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import pymedia
-
-player = pymedia.Player() #Création de l'objet player
-player.start()
-player.startPlayback('unFichierSon.mp3') #Chemin du fichier son à lire
-  
-while player.isPlaying(): #On boucle tant que la lecture n'est pas terminée
-    time.sleep( 0.01 )
-=======
 # Authors:Albert and Ludovic
 # Date: 15.01.2018
 
@@ -19,15 +9,16 @@ while player.isPlaying(): #On boucle tant que la lecture n'est pas terminée
 from mcpi.minecraft import Minecraft
 mc=Minecraft.create()
 import math
-xp,yp,zp=mc.player.getTilePos()
+##xp,yp,zp=mc.player.getTilePos()
         
-xp=xp+4
+##xp=xp+4
 #vitre = 102
 #porte = 64
 #brique de pierre = 98
 #planches =5
 ##z- north z+ south x+ east x- west
-mc.setBlocks(xp+20,yp+2000,zp+20,xp-20,yp,zp-20,0)
+##clear space
+##mc.setBlocks(xp+20,yp+2000,zp+20,xp-20,yp,zp-20,0)
 
 
 def One_range_roof(x1,y):
@@ -38,6 +29,7 @@ def house(x,y,z,length, width, height):
 
 x,y,z,length,width,height : int
 """
+    x=x+4
     mc.setBlocks(x,y-1,z,x+length,y+height,z+width,5) #cube en bois a "travailler"
     up = (height*2)//3
     
@@ -78,5 +70,4 @@ x,y,z,length,width,height : int
 
 
 
-house(xp,yp,zp,7,7,7)
->>>>>>> fb3093ef5e081571146b1695be61f3fd2b677e15
+##house(xp,yp,zp,7,7,7)

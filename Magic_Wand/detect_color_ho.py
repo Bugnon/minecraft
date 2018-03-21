@@ -13,7 +13,7 @@ camera = PiCamera()
 camera.resolution = (320, 240)
 camera.framerate = 32
 rawCapture = PiRGBArray(camera, size=(320, 240))
-time.sleep(1)
+##time.sleep(1)
 ##g = camera.awb_gains
 ##camera.awb_mode = 'off'
 ##camera.awb_gains = g
@@ -38,18 +38,16 @@ def detect_color(img, lower, upper):
     Midm = mask[0:240,120:200]
     RUm= mask[0:120,240:]
     RDm = mask[120:240,240:]
-    global LUm
-    global LDm
     
     regions =[LUm, LDm, Midm, RUm, RDm]
-    redmin=20
+    redmin=30
     for region in regions:
-        #print(np.average(region)>redmin, end=",")
+        print(np.average(region)>redmin, end=",")
         if np.average(region)>redmin:
-            r[str(region)]= True
-#    print()
-##        if np.average(region)>redmin:
-##            region.cv2.a
+
+            i=1            
+    print()
+
 ##
 ####def get_center(mask):
 ##    """ Calculate the center position (x, y) of the white pixels"""
@@ -150,14 +148,14 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     All[119:122,202:320]=(0,0,255)
 
     lowerR = [0, 0, 60]
-    upperR = [40, 50, 255]
+    upperR = [50, 70, 255]
     lowerB = [0, 0, 60]
     upperB = [80, 80, 255]
     
     detect_color(frameClone, lowerR, upperR)
     
-    if r.get("LUm")==True:
-        LU.cv2.rectangle[5:115,5:115,5,(0,0,255)]
+##    if r.get("LUm")==True:
+##        LU.cv2.rectangle[5:115,5:115,5,(0,0,255)]
         
 ##    r[LDm]:False, r[Midm]:False, r[RUm]:False, r[RDm]:False
     #Stack images

@@ -1,6 +1,6 @@
 from mcpi.minecraft import Minecraft
 mc=Minecraft.create()
-xp,yp,zp=mc.player.getTilePos()
+##xp,yp,zp=mc.player.getTilePos()
 import time
 
 def airx(x,y):
@@ -93,7 +93,7 @@ def Mine(x,y,z,direction,size):
         mc.postToChat("Work Done")
 
 
-Mine(xp,yp,zp,"North",23) 
+##Mine(xp,yp,zp,"North",23) 
 
 
             

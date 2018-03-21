@@ -1,5 +1,5 @@
 # Authors:Albert and Ludovic
-# Date: 30.12.2017
+# Date: 03.2018
 
 # Affiliation : Gymnase du Bugnon
 # Year 2017-2018
@@ -8,7 +8,7 @@
 # ---------------------------------------
 # Modules importations
 # ---------------------------------------
-##from  mcpi.minecraft import Minecraft
+from  mcpi.minecraft import Minecraft
 
 import RPi.GPIO as gpio
 import time
@@ -71,27 +71,27 @@ button_setup('button5')
 # Functions
 # =======================================
 
-def button_fct_pressed(nb):
-    """Test if nb (button + number of button) is pressed, released, or beeing pressed.
-transform button flags :
-        -0  for released
-        -1 for beeing pushed
-        -' ' for pushed
-        
-nb: str
-"""
-    if  not gpio.input(eval(nb)) and flags[nb]==0 and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):
-        flags[nb]=1
-        time_flag[nb]=time.time()
-        return
-    if (flags[nb]== 1 or flags[nb]==' ') and not gpio.input(eval(nb)):
-        flags[nb] = ' '
-        return
-    
-    if (flags[nb]==' ' or flags[nb]==1 )and gpio.input(eval(nb)) and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):       
-        flags[nb]=0
-        time_flag[nb]=time.time()
-        return
+##def button_fct_pressed(nb):
+##    """Test if nb (button + number of button) is pressed, released, or beeing pressed.
+##transform button flags :
+##        -0  for released
+##        -1 for beeing pushed
+##        -' ' for pushed
+##        
+##nb: str
+##"""
+##    if  not gpio.input(eval(nb)) and flags[nb]==0 and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):
+##        flags[nb]=1
+##        time_flag[nb]=time.time()
+##        return
+##    if (flags[nb]== 1 or flags[nb]==' ') and not gpio.input(eval(nb)):
+##        flags[nb] = ' '
+##        return
+##    
+##    if (flags[nb]==' ' or flags[nb]==1 )and gpio.input(eval(nb)) and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):       
+##        flags[nb]=0
+##        time_flag[nb]=time.time()
+##        return
 
 def check_buttons_fct():
     """execute for every button (1,2,3,4,5) the fonction : button_fct_pressed(nb):
@@ -101,6 +101,11 @@ def check_buttons_fct():
     button_fct_pressed('button3')
     button_fct_pressed('button4')
     button_fct_pressed('button5')
+    button_fct_pressed('button6')
+    button_fct_pressed('button7')
+    button_fct_pressed('button8')
+    button_fct_pressed('button9')
+    button_fct_pressed('button10')
 
 # =======================================
 # Principal

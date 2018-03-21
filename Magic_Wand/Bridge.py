@@ -1,6 +1,6 @@
 from mcpi.minecraft import Minecraft
 mc=Minecraft.create()
-xp,yp,zp=mc.player.getTilePos()
+##xp,yp,zp=mc.player.getTilePos()
 
 def isvoid(x,y,z):
     """check if block is air or water"""
@@ -53,7 +53,7 @@ def lengthbridge(x,y,z,direction):
                     l+=i-1
         else:
             lengthbridge(x-1,y,z,direction)
-    print(l)
+##    print(l)
     return l
 
 
@@ -120,4 +120,4 @@ def bridge(x,y,z,direction,blocktype):
 ##lengthbridge(xp,yp,zp,"North")
 
 
-bridge(xp,yp,zp,"North","WOOD")
+##bridge(xp,yp,zp,"North","WOOD")

@@ -123,7 +123,37 @@ def check_buttons_fct():
     button_fct_pressed('button9')
     button_fct_pressed('button10')
     
-
+def Bridge(p2):
+    xp,yp,zp=mc.player.getTilePos()
+    
+    if p2==True:
+        M = "WOOD"
+    else:
+        M = "COBBLESTONE"
+    
+    Bridge.bridge(xp,yp,zp,"North",M)
+    
+    
+def House(p1,p2):
+    xp,yp,zp=mc.player.getTilePos()
+    xp=xp+4
+    
+    if p1==True:
+        length=12
+        width=14
+        height=12
+        
+    if p1==False:
+        length=7
+        width=5
+        height=7
+        
+    if p2==True:
+        M = "COBBLESTONE"
+    if p2==False:
+        M = "WOOD"
+        
+    House.house(xp,yp,zp,length,width,height,M)
 # ---------------------------------------
 #initialisation of values
 # ---------------------------------------

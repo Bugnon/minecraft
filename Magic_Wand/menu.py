@@ -1,2 +1,2 @@
 import os
-os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/heighho.mp3')
+os('omxplayer -o local songs/heighho.mp3')

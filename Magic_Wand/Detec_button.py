@@ -71,27 +71,27 @@ button_setup('button5')
 # Functions
 # =======================================
 
-##def button_fct_pressed(nb):
-##    """Test if nb (button + number of button) is pressed, released, or beeing pressed.
-##transform button flags :
-##        -0  for released
-##        -1 for beeing pushed
-##        -' ' for pushed
-##        
-##nb: str
-##"""
-##    if  not gpio.input(eval(nb)) and flags[nb]==0 and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):
-##        flags[nb]=1
-##        time_flag[nb]=time.time()
-##        return
-##    if (flags[nb]== 1 or flags[nb]==' ') and not gpio.input(eval(nb)):
-##        flags[nb] = ' '
-##        return
-##    
-##    if (flags[nb]==' ' or flags[nb]==1 )and gpio.input(eval(nb)) and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):       
-##        flags[nb]=0
-##        time_flag[nb]=time.time()
-##        return
+def button_fct_pressed(nb):
+    """Test if nb (button + number of button) is pressed, released, or beeing pressed.
+transform button flags :
+        -0  for released
+        -1 for beeing pushed
+        -' ' for pushed
+        
+nb: str
+"""
+    if  not gpio.input(eval(nb)) and flags[nb]==0 and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):
+        flags[nb]=1
+        time_flag[nb]=time.time()
+        return
+    if (flags[nb]== 1 or flags[nb]==' ') and not gpio.input(eval(nb)):
+        flags[nb] = ' '
+        return
+    
+    if (flags[nb]==' ' or flags[nb]==1 )and gpio.input(eval(nb)) and (time_flag[nb]==0 or time_flag[nb]+antirebond_time<time.time()):       
+        flags[nb]=0
+        time_flag[nb]=time.time()
+        return
 
 def check_buttons_fct():
     """execute for every button (1,2,3,4,5) the fonction : button_fct_pressed(nb):
@@ -124,5 +124,5 @@ while True:
         mc.postToChat("You've pressed button5") # now just for test
 
     # To see how button are "detected". Attention! Use a time.sleep function if you want to test this on Thonny
-    #print(flags['button1'],flags['button2'],flags['button3'],flags['button4'],flags['button5'])
+    print(flags['button1'],flags['button2'],flags['button3'],flags['button4'],flags['button5'])
 

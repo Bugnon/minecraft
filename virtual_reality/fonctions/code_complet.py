@@ -2,44 +2,52 @@ import time
 import pyautogui
 from mcpi.minecraft import Minecraft
 import RPi.GPIO as gpio
+from time import sleep
 mc = Minecraft.create()
 x, y, z = mc.player.getPos()
 
-buttonL = 14
-buttonR = 15
+buttonL = 
+buttonR = 
 buttonH = 
-buttonI = 
 buttonA = 
-buttonB =
-buttonS =
-buttonJ =
+buttonS = 
+buttonJ = 
 
 gpio.setmode(gpio.BCM)
 gpio.setup(buttonL, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonR, gpio.IN, pull_up_down=gpio.PUD_UP)
-gpio.setup(buttonH, gpio.IN, pull_up_down=gpio.PUD_UP)
-gpio.setup(buttonI, gpio.IN, pull_up_down=gpio.PUD_UP)    
+gpio.setup(buttonH, gpio.IN, pull_up_down=gpio.PUD_UP)    
 gpio.setup(buttonA, gpio.IN, pull_up_down=gpio.PUD_UP)
-gpio.setup(buttonB, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonS, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonJ, gpio.IN, pull_up_down=gpio.PUD_UP)
 
 L0 = False
 R0 = False
 H0 = True
-I0 = True
-A0 = True
-B0 = True
+A0 = False
 S0 = True
 J0 = True
+
+gpio.setup(2, gpio.OUT)
+pwmAH = gpio.PWM(2, 50)
+
+# fonction servo casser briques
+
+def SetAngle(angle):
+	duty = angle / 18 + 2
+	gpio.output(2, True)
+	pwmAH.ChangeDutyCycle(duty)
+	sleep(1)
+	gpio.output(2, False)
+	pwmAH.ChangeDutyCycle(0)
+
+
 
 while True:
     L = gpio.input(buttonL)
     R = gpio.input(buttonR)
     H = gpio.input(buttonH)
-    I = gpio.input(buttonI)
     A = gpio.input(buttonA)
-    B = gpio.input(buttonB)
     S = gpio.input(buttonS)
     J = gpio.input(buttonJ)
     
@@ -65,31 +73,26 @@ while True:
 # Début code création d'une brique (type 1 = pierre)
     
     if not H and H0:
-        x, y, z = mc.player.getPos()
-        mc.setBlocks(x, y, z+1, x, y, z+1, 1)
-        
-    H = H0
-    
-    
-    if not I and I0:
-        x, y, z = mc.player.getPos()
-        mc.setBlocks(x+1, y, z, x+1 ,y, z, 1)
+            pwmAH.start(100)
+            SetAngle(50)
 
-    I = I0
+    if H and not H0:
+            pwmAH.start(50)
+            SetAngle(100)
+	    
+    H0 = H
     
 # Début code casser une brique
 
     if not A and A0:
-        x, y, z = mc.player.getPos()
-        mc.setBlocks(x+1, y, z, x+2 ,y, z, 0)
+            pwmAH.start(100)
+            SetAngle(50)
 
-    A = A0
-    
-    if not B and B0:
-        x, y, z = mc.player.getPos()
-        mc.setBlocks(x, y, z+1, x, y, z+2, 0)
-        
-    B = B0
+    if A and not A0:
+            pwmAH.start(50)
+            SetAngle(100)
+	    
+    A0 = A
     
 # Début code changement de bloc/arme en main
 
@@ -110,4 +113,8 @@ while True:
 
 # Début code rotation personnage
     
-    
+  
+  
+# fin code
+pwm.stop()
+gpio.cleanup()

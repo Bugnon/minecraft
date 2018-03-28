@@ -1,7 +1,7 @@
 import time
 import RPi.GPIO as gpio
 
-
+#rotation bouton définitf
 
 #Installations boutons
 buttonL = 14
@@ -50,7 +50,3 @@ while True:
     right0 = right
 
 #pwm.stop()
-
-
-
-

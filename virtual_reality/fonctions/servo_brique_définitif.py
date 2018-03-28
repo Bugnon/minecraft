@@ -3,6 +3,8 @@ import pyautogui
 import RPi.GPIO as gpio
 from time import sleep
 
+#Fonction servo brique définitif
+
 
 #Installations boutons
 buttonL = 14

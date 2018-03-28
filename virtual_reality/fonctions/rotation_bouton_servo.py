@@ -29,38 +29,36 @@ def SetAngle(angle):
 	sleep(1)
 	gpio.output(2, False)
 	pwm.ChangeDutyCycle(0)
-	
+
+def rot(x,angle):
+    if not left and left0:
+        if angle <= 100:
+            pwm.start(x)
+            SetAngle(angle+20)
+            return angle
+    
+    if left and not left0:
+        pass
+    
+    if not right and right0:
+        if angle <= 100:
+            pwm.start(x)
+            SetAngle(angle-20)
+            return angle
+        
+    if right and not right0:
+            pass
+
 # Code couplé bouton et Servo
 
-x = 50
 while True:
     left = gpio.input(buttonL)
     right = gpio.input(buttonR)
 
-    
-    if not left and left0:
-            pwm.start(50)
-            SetAngle(100)
-
-
-
-    if left and not left0:
-            pass
-	    
-	    
+    rot(10,40)
     left0 = left
-
-    
-    if not right and right0:
-            pwm.start(100)
-            SetAngle(50)
-
-    if right and not right0:
-            pass
-		
-		
     right0 = right
-	
+    
 pwm.stop()
 gpio.cleanup()
 

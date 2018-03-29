@@ -6,12 +6,12 @@ from time import sleep
 mc = Minecraft.create()
 x, y, z = mc.player.getPos()
 
-buttonL = 
-buttonR = 
-buttonH = 
-buttonA = 
-buttonS = 
-buttonJ = 
+buttonL = 14
+buttonR = 15
+buttonH = 18
+buttonA = 17
+buttonS = 2
+buttonJ = 6
 
 gpio.setmode(gpio.BCM)
 gpio.setup(buttonL, gpio.IN, pull_up_down=gpio.PUD_UP)

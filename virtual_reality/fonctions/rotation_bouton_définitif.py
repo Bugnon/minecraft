@@ -23,7 +23,7 @@ pwm = gpio.PWM(2, 50)
 
 
 # Code couplé bouton et Servo
-x = 7.5
+x = 5
 pwm.start(x)
 
 while True:
@@ -48,5 +48,3 @@ while True:
         pass		
 		
     right0 = right
-
-#pwm.stop()

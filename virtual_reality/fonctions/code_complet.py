@@ -1,9 +1,46 @@
 ### Code complet
+#Benoit Gallois et Jonas Grütter
+# Projet Virtual reality
+#29.03.18
 
 import time
 import pyautogui
 import RPi.GPIO as gpio
 from time import sleep
+from mcpi.minecraft import Minecraft
+
+mc = Minecraft.create()
+x, y ,z = mc.player.getPos()
+
+#Créer un monde plat pour faciliter déplacement
+
+def monde_plat():
+        mc.setBlocks(x-300 ,y , z-300 ,x+300 ,y,z+300 ,2 )
+        mc.setBlocks(x-300, y+1, z-300, x+300, y+300, z+300, 0)
+     
+monde_plat()
+
+#Créer des arbres pour le paysage
+
+def arbre(a, b, c):
+    mc.setBlocks(x+a ,y , z+c ,x+a ,y+b,z+c ,17)
+    mc.setBlocks(x+(a-2) ,y+b , z+(c-2) ,x+(a+2) ,y+b,z+(c+2) ,18)
+    mc.setBlocks(x+(a-1) ,y+(b+1) , z+(c-1) ,x+(a+1) ,y+(b+1),z+(c+1) ,18)
+    mc.setBlocks(x+a ,y+(b+2) , z+c ,x+a ,y+(b+2),z+c ,18)
+    
+arbre(6,4,4)
+arbre(10,3,4)
+arbre(20,4,8)
+arbre(3,8,9)
+arbre(5,9,9)
+arbre(7,7,7)
+arbre(3,9,67)
+arbre(50,10,34)
+arbre(65,3,56)
+arbre(34,13,90)
+arbre(90,7,45)
+arbre(27,8,74)
+arbre(78,4,5)
 
 ## Installation bouton
 
@@ -47,8 +84,8 @@ D0 = False
 
 #Servo pour rotation du personnage, connecté à boutons C et D
 
-##gpio.setup(2, gpio.OUT)
-##pwm = gpio.PWM(2, 50)
+gpio.setup(2, gpio.OUT)
+pwm = gpio.PWM(2, 50)
 
 # Servo pour clique gauche, connecté à bouton A
 
@@ -62,11 +99,11 @@ pwmR = gpio.PWM(13, 50)
 
 ##Etat de base des servo
 
-pwmL.start(5)# Etat de base du servo pwmL
-pwmR.start(6.5)#  Etat de base du servo pwmR
+pwmL.start(4)# Etat de base du servo pwmL
+pwmR.start(8)#  Etat de base du servo pwmR
 
-##x = 7.5
-##pwm.start(x)
+x = 7.5
+pwm.start(x)
 
 ##  Code avancer buttons
 
@@ -97,9 +134,9 @@ while True:
 # clique gauche de la souris, casser une brique
 
     if not A and A0:
-            pwmL.ChangeDutyCycle(9.4)
+            pwmL.ChangeDutyCycle(2.5)
             time.sleep(0.5)
-            pwmL.ChangeDutyCycle(5)
+            pwmL.ChangeDutyCycle(4)
     if A and not A0:
             pass
 	    
@@ -108,9 +145,9 @@ while True:
 # clique droite de la souris, créer une brique
 
     if not B and B0:
-            pwmR.ChangeDutyCycle(2.5)
+            pwmR.ChangeDutyCycle(11)
             time.sleep(0.75)
-            pwmR.ChangeDutyCycle(6.5)
+            pwmR.ChangeDutyCycle(8)
             
     if B and not B0:
             pass
@@ -126,23 +163,22 @@ while True:
     C = gpio.input(buttonC)
     D = gpio.input(buttonD)
 
-# tire le miservo vers 12.5
+### tire le miservo vers 12.5
 
-##    if not C and C0 and x < 12.5:
-##        pwm.ChangeDutyCycle(x+2.5)
-##        x = x+2.5
-##        
-##    if C and not C0:
-##            pass 
-##
-##    C0 = C
+    if not C and C0 and x < 12.5:
+        pwm.ChangeDutyCycle(x+2.5)
+        x = x+2.5
+            
+    if C and not C0:
+            pass 
+    C0 = C
 
-# tire le mini servo vers 2.5
+    # tire le mini servo vers 2.5
     
-##    if not D and D0 and x > 2.5:
-##        pwm.ChangeDutyCycle(x-2.5)
-##        x = x-2.5
-##
-##    if D and not D0:
-##        pass		
-##    D0 = D
+    if not D and D0 and x > 2.5:
+        pwm.ChangeDutyCycle(x-2.5)
+        x = x-2.5
+
+    if D and not D0:
+        pass		
+    D0 = D

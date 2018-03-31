@@ -1,6 +1,5 @@
 ## Author: Gabriel Fleischer et Furbringer
 ## Date: 5. 10. 2017
-## File: 03_led2.py
 ## Affiliation: Gymnase du Bugnon
 ## OC informatique
 ## import the modules to access the GPIO
@@ -18,6 +17,24 @@ import mcpi
 #import camera module
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+
+from mcpi.minecraft import Minecraft
+
+print("Initialising")
+
+mc = Minecraft.create()
+mc.postToChat("Initialising")
+p = mc.player
+
+hight = 1
+
+def placeBlock(x,y):
+    global hight
+    global mc
+    
+    mc.postToChat(str((x, hight, y)))
+    
+    mc.setBlock(x,hight,y, 35, 15)
 
 # =======================================
 # Initialisation
@@ -57,75 +74,122 @@ transform button flags :
         -1 for beeing pushed
         -' ' for pushed
 """
+    global flag
+    global time_flag
+    global button
+    global antirebond_time
+    
     if  not gpio.input(button) and flag==0 and (time_flag==0 or time_flag+antirebond_time<time.time()):
         flag=1
         time_flag=time.time()
-        return
-    if (flag== 1 or flag==' ') and not gpio.input(button):
+    elif (flag== 1 or flag==' ') and not gpio.input(button):
         flag = ' '
-        return
     
-    if (flag==' ' or flag==1 )and gpio.input(button) and (time_flag==0 or time_flag+antirebond_time<time.time()):       
+    elif (flag==' ' or flag==1 )and gpio.input(button) and (time_flag==0 or time_flag+antirebond_time<time.time()):       
         flag=0
         time_flag=time.time()
-        return
 
-def placeBlock(x, y):
-    j= 0
-
-def init(corner1, corner2):
-    (x1, y1) = corner1
-    (x2, y2) = corner2
-    (cx, cy) = ((x2 + x1)/2, (y2 + y1)/2)
-    angle = 45-math.tan((cy-y1)/(cx-x1))*180/math.PI
-    radius = math.sqrt(((cy-y1)^2+(cx-x1)^2)/2)
-    minX = cx - radius
-    minY = cy - radius
-    maxX = cx + radius
-    maxY = cy + radius
-    return (angle, (minX, minY), (maxX, maxY), (cx, cy))
-
-def checkDif(img1, img2, x, y, tolerence=30):
-    dif = img1[x, y]-img2[x, y]
-    return (dif >= 0 and dif <= tolerence) or (dif < 0 and -dif <= tolerence)
+def init(angle, center, radius):
+    global mc
+    p = mc.player
     
-def takePicture():
-    global: frameData
+    p.setPos(9, 10,0)
+    mc.setBlocks(-2,-1,-2, 10, 100, 10, 155)
+    mc.setBlocks(-1,0,-1, 9, 100, 9, 0)
+    mc.setBlocks(0,-1,0, 8, -1, 8, 2)
+    
+    (cx, cy) = center
+    minX = int(cx - radius)
+    minY = int(cy - radius)
+    maxX = int(cx + radius)
+    maxY = int(cy + radius)
+    return (angle, (minY, minX), (maxY, maxX), (int(cy), int(cx)))
+
+def checkDif(img1, img2, x, y, dif2, image, tolerence=70):
+    pos1 = int(img1[x, y])
+    pos2 = int(img2[x, y])
+    dif = pos1 - pos2 - dif2
+    if dif < 0:
+        dif = -dif
+    return dif >= tolerence
+
+def takePicture(frame, frameData):
     (angle, (minX, minY), (maxX, maxY), (centerX, centerY)) = frameData
-    frame = camera.capture(rawCapture, format="bgr").array
     dims = frame.shape[:2]
     M = cv2.getRotationMatrix2D((centerX, centerY), angle, 1)
     frame = cv2.warpAffine(frame, M, dims)
-    return frame[ minY:maxY , minX,maxX ]
+    frame = frame[ minX:maxX , minY:maxY ]
+    frame = cv2.resize(frame, (150, 150), interpolation = cv2.INTER_AREA)
+    frame = cv2.GaussianBlur(frame, (3, 3), 0)
+    return frame
 
 def onButtonPressed():
-    print("Pressed")
-    last_pic = new_pic
-    new_pic = takePicture()
+    global last_pic
+    global new_pic
+    global positions
+    global pointToWatch
+    global hight
     
+    (b1, g1, r1) = last_pic[pointToWatch[0], pointToWatch[1]]
+    (b2, g2, r2) = last_pic[pointToWatch[0], pointToWatch[1]]
+    
+    r = r1-r2
+    g = g1-g2
+    b = b1-b2
+
     (B1, G1, R1)=cv2.split(last_pic)
     (B2, G2, R2)=cv2.split(new_pic)
     for (mcx, mcy, x, y) in positions:
-        if checkDif(B1, B2, x, y) or checkDif(G1, G2, x, y) or checkDif(R1, R2, x, y):
+        if checkDif(B1, B2, x, y, b, "Bleu") or checkDif(G1, G2, x, y, g, "vert") or checkDif(R1, R2, x, y, r, "rouge"):
             placeBlock(mcx, mcy)
+    hight = hight+1
    
 def buildPositions(n, border, totalLenght):
-    poses = {}
+    poses = []
     for mcx in range(n):
         for mcy in range(n):
-            poses.append((mcx, mcy, border + (totalLength-2*border)/n*mcx, border + (totalLength-2*border)/n*mcy))
+            poses.append((mcx, mcy, int(border + (totalLenght-2*border)/(n - 1)*mcx), int(border + (totalLenght-2*border)/(n - 1)*mcy)))
     return poses
     
 def reset():
+    global mc
+    global hight
     print("reset")
+    mc.setBlocks(-2,-1,-2, 9, 100, 9, 155)
+    mc.setBlocks(-1,0,-1, 8, 100, 8, 0)
+    mc.setBlocks(0,-1,0, 7, -1, 7, 2)
+    mc.postToChat("reset")
+    hight = 1
     
+def showInit(positions, image):
+    global pointToWatch
     
+    p = image.copy()
+    for (mcx, mcy, x, y) in positions:
+        p[x-1:x+1 , y-1:y+1] = (0, 0, 255)
+    p[pointToWatch[0], pointToWatch[1]] = (0, 255, 0)
+    return p
+
+
 # initialize the camera and grab a reference to the raw camera
 # capture
 camera = PiCamera()
 #camera.resolution = (640, 480)
-camera.resolution = (160, 120)
-rawCapture = PiRGBArray(camera, size=(320, 240))
+camera.resolution = (640, 480)
+rawCapture = PiRGBArray(camera, size=(640, 480))
+
+
+##Manual
+frameData = init(-2, (350, 292), 95)
+pointToWatch = (3, 30)
+
+#reset detection
+resetPushTime = 5
+alreadyReset=False
+
+#pictures
+last_pic = None
+new_pic = None
 
 #List of tuples storing the diffrent positions of the LEGO bricks to check.
 #tuple : (mcx, mcy, x, y)
@@ -134,20 +198,19 @@ rawCapture = PiRGBArray(camera, size=(320, 240))
 # mcx : minecraft x
 # mcy : minecraft y
 ##Manual
-positions = buildPositions(16, 10, 100)
+positions = buildPositions(8, 16, 150)
 
-##Manual
-frameData = init((10, 100), (100, 110))
-
-#reset detection
-resetPushTime = 5
-alreadyReset=False
-
-#pictures
-last_pic
-new_pic
-
-while True:
+i = -1
+for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+    # grab the raw NumPy array representing the image
+    frame = takePicture(f.array, frameData)
+    i = i + 1
+    if new_pic == None and i > 2:
+        new_pic = frame
+        last_pic = frame
+        print("Initialisation complete !")
+        mc.postToChat("Initialisation complete !")
+    pushed = False
     if flag:
         pushed = True
         
@@ -155,10 +218,22 @@ while True:
     
     if not flag:
         if pushed and not alreadyReset:
+            last_pic = new_pic
+            new_pic = frame
             onButtonPressed()
         alreadyReset = False
     
     t = time.time()
-    if t - time_flag  >= resetPushTime:
+    if flag and t - time_flag  >= resetPushTime and not alreadyReset:
         reset()
         alreadyReset=True
+        
+    
+    if new_pic != None :
+        cv2.imshow("Diff", showInit(positions, new_pic))
+        #cv2.imshow("Diff", np.hstack([new_pic, last_pic]))
+    rawCapture.truncate(0)
+    
+    # if the 'q' key is pressed, stop the loop
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break

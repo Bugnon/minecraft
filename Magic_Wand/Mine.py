@@ -1,6 +1,7 @@
 from mcpi.minecraft import Minecraft
 mc=Minecraft.create()
-xp,yp,zp=mc.player.getTilePos()
+##xp,yp,zp=mc.player.getTilePos()
+import time
 
 def airx(x,y):
     """Set air on x axis
@@ -43,9 +44,11 @@ def Mine(x,y,z,direction,size):
             airz(z-(i+1),y-(i+1))
             mc.setBlock(x,y-(i+2),z-(i+1),67,2) #stairs
         mc.setBlock(x,y-1,z,67,2)
+        time.sleep(1)
         for i in range(size):
             if isAirz(z-(1+i),y-(1+i)) is False: #check if gravel or sand fell down
                 Mine(x,y,z,direction,size)
+        time.sleep(1)
         for i in range(size//5):
             mc.setBlock(x,y-(1+i)*5,z-(1+i)*5,50,2) #torches must be after the isAir to prevent bug
         mc.postToChat("Work Done")
@@ -54,9 +57,11 @@ def Mine(x,y,z,direction,size):
             airz(z+(i+1),y-(i+1))
             mc.setBlock(x,y-(i+2),z+(i+1),67,3)
         mc.setBlock(x,y-1,z,67,3)
+        time.sleep(1)
         for i in range(size):
             if isAirz(z+(1+i),y-(1+i)) is False:
                 Mine(x,y,z,direction,size)
+        time.sleep(1)
         for i in range(size//5):
             mc.setBlock(x,y-(1+i)*5,z+(1+i)*5,50,1) 
         mc.postToChat("Work Done")
@@ -65,9 +70,11 @@ def Mine(x,y,z,direction,size):
             airx(x+(i+1),y-(i+1))
             mc.setBlock(x+(i+1),y-(i+2),z,67,1)
         mc.setBlock(x,y-1,z,67,1)
+        time.sleep(1)
         for i in range(size):
             if isAirx(x-(1+i),y-(1+i)) is False:
                 Mine(x,y,z,direction,size)
+        time.sleep(1)
         for i in range(size//5):
             mc.setBlock(x+(1+i)*5,y-(1+i)*5,z,50,4) 
         mc.postToChat("Work Done")
@@ -76,15 +83,17 @@ def Mine(x,y,z,direction,size):
             airx(x-(i+1),y-(i+1))
             mc.setBlock(x-(i+1),y-(i+2),z,67,0)
             mc.setBlock(x,y-1,z,67,0)
+        time.sleep(1)
         for i in range(size):
             if isAirx(x-(1+i),y-(1+i)) is False:
                 Mine(x,y,z,direction,size)
+        time.sleep(1)
         for i in range(size//5):
             mc.setBlock(x-(1+i)*5,y-(1+i)*5,z,50,3)
         mc.postToChat("Work Done")
 
 
-Mine(xp,yp,zp,"North",23) 
+##Mine(xp,yp,zp,"North",23) 
 
 
             

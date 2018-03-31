@@ -1,6 +1,6 @@
 from mcpi.minecraft import Minecraft
 mc=Minecraft.create()
-xp,yp,zp=mc.player.getTilePos()
+##xp,yp,zp=mc.player.getTilePos()
 #size must be odd
 
 
@@ -40,6 +40,7 @@ def Midascube(x,y,z,size,blockid):
     mc.postToChat("Work Done")
 
 
-#Midascube(xp,yp,zp,9,41) Example
+##Midascube(xp,yp,zp,9,41)
+
         
         

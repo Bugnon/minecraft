@@ -1,5 +1,5 @@
 # Authors:Albert and Ludovic
-# Date: 30.12.2017
+# Date: 03.2018
 
 # Affiliation : Gymnase du Bugnon
 # Year 2017-2018
@@ -8,7 +8,7 @@
 # ---------------------------------------
 # Modules importations
 # ---------------------------------------
-##from  mcpi.minecraft import Minecraft
+from  mcpi.minecraft import Minecraft
 
 import RPi.GPIO as gpio
 import time
@@ -101,6 +101,11 @@ def check_buttons_fct():
     button_fct_pressed('button3')
     button_fct_pressed('button4')
     button_fct_pressed('button5')
+    button_fct_pressed('button6')
+    button_fct_pressed('button7')
+    button_fct_pressed('button8')
+    button_fct_pressed('button9')
+    button_fct_pressed('button10')
 
 # =======================================
 # Principal
@@ -119,5 +124,5 @@ while True:
         mc.postToChat("You've pressed button5") # now just for test
 
     # To see how button are "detected". Attention! Use a time.sleep function if you want to test this on Thonny
-    #print(flags['button1'],flags['button2'],flags['button3'],flags['button4'],flags['button5'])
+    print(flags['button1'],flags['button2'],flags['button3'],flags['button4'],flags['button5'])
 

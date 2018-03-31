@@ -124,21 +124,25 @@ def takePicture(frame, frameData):
     return frame
 
 def onButtonPressed():
+    global first_pic
     global last_pic
     global new_pic
     global positions
     global pointToWatch
     global hight
     
-    (b1, g1, r1) = last_pic[pointToWatch[0], pointToWatch[1]]
-    (b2, g2, r2) = last_pic[pointToWatch[0], pointToWatch[1]]
+	last = first_pic
+	new = new_pic
+	
+    (b1, g1, r1) = last[pointToWatch[0], pointToWatch[1]]
+    (b2, g2, r2) = new[pointToWatch[0], pointToWatch[1]]
     
     r = r1-r2
     g = g1-g2
     b = b1-b2
 
-    (B1, G1, R1)=cv2.split(last_pic)
-    (B2, G2, R2)=cv2.split(new_pic)
+    (B1, G1, R1)=cv2.split(last)
+    (B2, G2, R2)=cv2.split(new)
     for (mcx, mcy, x, y) in positions:
         if checkDif(B1, B2, x, y, b, "Bleu") or checkDif(G1, G2, x, y, g, "vert") or checkDif(R1, R2, x, y, r, "rouge"):
             placeBlock(mcx, mcy)
@@ -188,6 +192,7 @@ resetPushTime = 5
 alreadyReset=False
 
 #pictures
+first_pic = None
 last_pic = None
 new_pic = None
 
@@ -206,6 +211,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     frame = takePicture(f.array, frameData)
     i = i + 1
     if new_pic == None and i > 2:
+		first_pic = frame
         new_pic = frame
         last_pic = frame
         print("Initialisation complete !")

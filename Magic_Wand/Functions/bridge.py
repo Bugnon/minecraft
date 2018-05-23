@@ -35,14 +35,14 @@ def first_stage(x, y, z):
     mc.setBlock(xs-1, ys+1, zs+1, block)
     mc.setBlock(xs+2, ys+1, zs+1, block)
 # escaliers à l'envers derrière les escaliers précédents
-    mc.setBlocks(xs-1, ys+1, zs,xs+2, ys+1, zs, stairs, 6)
+    mc.setBlocks(xs-1, ys+1, zs, xs+2, ys+1, zs, stairs, 6)
 # deux escaliers décoratifs à l'arrière du pont
     mc.setBlock(xs-1, ys+1, zs-l-1, stairs, 2)
     mc.setBlock(xs+2, ys+1, zs-l-1, stairs, 2)
 # escaliers sur lesquels le joueur marche
-    mc.setBlocks(xs, ys+1, zs-l,xs+1, ys+1, zs-l, stairs, 2)
+    mc.setBlocks(xs, ys+1, zs-l, xs+1, ys+1, zs-l, stairs, 2)
 # escaliers à l'envers devant les escaliers précédents
-    mc.setBlocks(xs-1, ys+1, zs-l+1,xs+2, ys+1, zs-l+1, stairs, 7)
+    mc.setBlocks(xs-1, ys+1, zs-l+1, xs+2, ys+1, zs-l+1, stairs, 7)
 # deux blocs décoratifs sur le coté du pont
     mc.setBlock(xs-1, ys+1, zs-l, block)
     mc.setBlock(xs+2, ys+1, zs-l, block)
@@ -53,7 +53,7 @@ def second_stage(x, y, z):
     mc.setBlock(xs-1, ys+2, zs+1, stairs, 3)
     mc.setBlock(xs+2, ys+2, zs+1, stairs, 3)
 # escaliers sur lesquels le joueur marche
-    mc.setBlocks(xs, ys+2, zs,xs+1, ys+2, zs, stairs, 3)
+    mc.setBlocks(xs, ys+2, zs, xs+1, ys+2, zs, stairs, 3)
 # deux blocs décoratifs sur le coté du pont
     mc.setBlock(xs-1, ys+2, zs, block)
     mc.setBlock(xs+2, ys+2, zs, block)
@@ -70,12 +70,12 @@ def second_stage(x, y, z):
     mc.setBlock(xs-1, ys+2, zs-l+2, stairs, 7)
     mc.setBlock(xs+2, ys+2, zs-l+2, stairs, 7)
 # escaliers sur lesquels le joueur marche
-    mc.setBlocks(xs, ys+2, zs-l+1,xs+1, ys+2, zs-l+1, stairs, 2)
+    mc.setBlocks(xs, ys+2, zs-l+1, xs+1, ys+2, zs-l+1, stairs, 2)
 # partie principale du pont
-    mc.setBlocks(xs, ys+2, zs-1,xs+1, ys+2, zs-l+2, block)
+    mc.setBlocks(xs, ys+2, zs-1, xs+1, ys+2, zs-l+2, block)
 # escaliers décoratifs à l'envers
-    mc.setBlocks(xs-1, ys+2, zs-2,xs-1, ys+2, zs-l+3, stairs, 4)
-    mc.setBlocks(xs+2, ys+2, zs-2,xs+2, ys+2, zs-l+3, stairs, 5)
+    mc.setBlocks(xs-1, ys+2, zs-2, xs-1, ys+2, zs-l+3, stairs, 4)
+    mc.setBlocks(xs+2, ys+2, zs-2, xs+2, ys+2, zs-l+3, stairs, 5)
 
 def bridge(x, y, z, blocktype):
     """Construit le pont"""
@@ -104,5 +104,6 @@ def bridge(x, y, z, blocktype):
         second_stage(x, y, z)
 # 3eme étage
 # rembarde de blocs
-        mc.setBlocks(xs-1, ys+3, zs,xs-1, ys+3, zs-l+1, block)
-        mc.setBlocks(xs+2, ys+3, zs,xs+2, ys+3, zs-l+1, block)
+        mc.setBlocks(xs-1, ys+3, zs, xs-1, ys+3, zs-l+1, block)
+        mc.setBlocks(xs+2, ys+3, zs, xs+2, ys+3, zs-l+1, block)
+

@@ -23,49 +23,33 @@ gpio.setup(3, gpio.OUT)
 pwmL = gpio.PWM(2, 50)
 pwmR = gpio.PWM(3, 50)
 
-def SetAngleL(angle):
-	duty = angle / 18 + 2
-	gpio.output(2, True)
-	pwmL.ChangeDutyCycle(duty)
-	sleep(0.5)
-	gpio.output(2, False)
-	pwmL.ChangeDutyCycle(0)
-	
-def SetAngleR(angle):
-	duty = angle / 18 + 2
-	gpio.output(3, True)
-	pwmR.ChangeDutyCycle(duty)
-	sleep(0.75)
-	gpio.output(3, False)
-	pwmR.ChangeDutyCycle(0)
 # Code couplé bouton et Servo
 
-
+pwmL.start(5) 
+pwmR.start(6.5)
 while True:
     left = gpio.input(buttonL)
     right = gpio.input(buttonR)
 
     if not left and left0:
-            pwmL.start(0)
-            SetAngleL(90)
-
+            pwmL.ChangeDutyCycle(9.4)
+            time.sleep(0.5)
+            pwmL.ChangeDutyCycle(5)
     if left and not left0:
-            pwmL.start(90)
-            SetAngleL(0)
+            pass
 	    
     left0 = left
 
     if not right and right0:
-            pwmR.start(100)
-            SetAngleR(10)
+            pwmR.ChangeDutyCycle(2.5)
+            time.sleep(0.75)
+            pwmR.ChangeDutyCycle(6.5)
             
     if right and not right0:
-            pwmR.start(10)
-            SetAngleR(100)
+            pass
             
     right0 = right
 
 
 
-pwm.stop()
-gpio.cleanup()
+#pwm.stop() si besoin

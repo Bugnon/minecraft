@@ -1,120 +1,193 @@
+### Code complet
+#Benoit Gallois et Jonas Grütter
+# Projet Virtual reality
+#29.03.18
+
 import time
 import pyautogui
-from mcpi.minecraft import Minecraft
 import RPi.GPIO as gpio
 from time import sleep
-mc = Minecraft.create()
-x, y, z = mc.player.getPos()
+from mcpi.minecraft import Minecraft
 
+mc = Minecraft.create()
+x, y ,z = mc.player.getPos()
+
+#Créer un monde plat pour faciliter déplacement
+
+def monde_plat():
+        mc.setBlocks(x-300 ,y , z-300 ,x+300 ,y,z+300 ,2 )
+        mc.setBlocks(x-300, y+1, z-300, x+300, y+300, z+300, 0)
+     
+monde_plat()
+
+#Créer des arbres pour le paysage
+
+def arbre(a, b, c):
+    mc.setBlocks(x+a ,y , z+c ,x+a ,y+b,z+c ,17)
+    mc.setBlocks(x+(a-2) ,y+b , z+(c-2) ,x+(a+2) ,y+b,z+(c+2) ,18)
+    mc.setBlocks(x+(a-1) ,y+(b+1) , z+(c-1) ,x+(a+1) ,y+(b+1),z+(c+1) ,18)
+    mc.setBlocks(x+a ,y+(b+2) , z+c ,x+a ,y+(b+2),z+c ,18)
+    
+arbre(6,4,4)
+arbre(10,3,4)
+arbre(20,4,8)
+arbre(3,8,9)
+arbre(5,9,9)
+arbre(7,7,7)
+arbre(3,9,67)
+arbre(50,10,34)
+arbre(65,3,56)
+arbre(34,13,90)
+arbre(90,7,45)
+arbre(27,8,74)
+arbre(78,4,5)
+
+## Installation bouton
+
+<<<<<<< HEAD
 buttonL = 14
 buttonR = 15
 buttonH = 18
 buttonA = 17
 buttonS = 2
 buttonJ = 6
+=======
+# Définition des boutons sur le GPIO
+>>>>>>> f5573f2d6dc31226ddda0366104d6438d42f00b1
 
-gpio.setmode(gpio.BCM)
+# Boutons pour avancer bouton
+
+buttonL = 14
+buttonR = 15
+
+# Boutons pour créer et casser brique
+
+buttonA = 23# clique gauche souris, connecter à pwmL
+buttonB = 24# clique droit souris, connecter à pwmR
+
+# Boutons pour la rotation du personnage, connectés à pwm
+
+buttonC = 20
+buttonD = 21
+
+#Etat de base des boutons
+
+gpio.setmode(gpio.BCM)# Mode du GPIO
 gpio.setup(buttonL, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonR, gpio.IN, pull_up_down=gpio.PUD_UP)
-gpio.setup(buttonH, gpio.IN, pull_up_down=gpio.PUD_UP)    
-gpio.setup(buttonA, gpio.IN, pull_up_down=gpio.PUD_UP)
-gpio.setup(buttonS, gpio.IN, pull_up_down=gpio.PUD_UP)
-gpio.setup(buttonJ, gpio.IN, pull_up_down=gpio.PUD_UP)
+gpio.setup(buttonA, gpio.IN, pull_up_down=gpio.PUD_UP)    
+gpio.setup(buttonB, gpio.IN, pull_up_down=gpio.PUD_UP)
+gpio.setup(buttonC, gpio.IN, pull_up_down=gpio.PUD_UP)
+gpio.setup(buttonD, gpio.IN, pull_up_down=gpio.PUD_UP)
 
-L0 = False
+# Etat lorsque les boutons ne sont pas appuyés
+
+L0 = False 
 R0 = False
-H0 = True
-A0 = False
-S0 = True
-J0 = True
+A0 = False 
+B0 = False 
+C0 = False
+D0 = False
+
+##Installation Servo
+
+#Servo pour rotation du personnage, connecté à boutons C et D
 
 gpio.setup(2, gpio.OUT)
-pwmAH = gpio.PWM(2, 50)
+pwm = gpio.PWM(2, 50)
 
-# fonction servo casser briques
+# Servo pour clique gauche, connecté à bouton A
 
-def SetAngle(angle):
-	duty = angle / 18 + 2
-	gpio.output(2, True)
-	pwmAH.ChangeDutyCycle(duty)
-	sleep(1)
-	gpio.output(2, False)
-	pwmAH.ChangeDutyCycle(0)
+gpio.setup(18, gpio.OUT)
+pwmL = gpio.PWM(18, 50)
 
+# Servo pour clique droit, connecté à bouton B
 
+gpio.setup(13, gpio.OUT)
+pwmR = gpio.PWM(13, 50)
+
+##Etat de base des servo
+
+pwmL.start(4)# Etat de base du servo pwmL
+pwmR.start(8)#  Etat de base du servo pwmR
+
+x = 7.5
+pwm.start(x)
+
+##  Code avancer buttons
 
 while True:
     L = gpio.input(buttonL)
     R = gpio.input(buttonR)
-    H = gpio.input(buttonH)
-    A = gpio.input(buttonA)
-    S = gpio.input(buttonS)
-    J = gpio.input(buttonJ)
-    
-    x,y,z = mc.player.getPos()
-
-# Début code avancer buttons
 
     if not L and L0:
-	    pyautogui.keyDown('w')
+            pyautogui.keyDown('w')
     if L and not L0:
-	    pyautogui.keyUp('w')
+            pyautogui.keyUp('w')
 		
     L0 = L
     
     if not R and R0:
-	    pyautogui.keyDown('w')
+            pyautogui.keyDown('w')
     if R and not R0:
-	    pyautogui.keyUp('w')
+            pyautogui.keyUp('w')
 		
 		
     R0 = R
 
-# Début code création d'une brique (type 1 = pierre)
-    
-    if not H and H0:
-            pwmAH.start(100)
-            SetAngle(50)
+## Code créer et casser brique avec servo pwmL et pwmR button A et button B
 
-    if H and not H0:
-            pwmAH.start(50)
-            SetAngle(100)
-	    
-    H0 = H
-    
-# Début code casser une brique
+    A = gpio.input(buttonA)
+    B = gpio.input(buttonB)
+
+# clique gauche de la souris, casser une brique
 
     if not A and A0:
-            pwmAH.start(100)
-            SetAngle(50)
-
+            pwmL.ChangeDutyCycle(2.5)
+            time.sleep(0.5)
+            pwmL.ChangeDutyCycle(4)
     if A and not A0:
-            pwmAH.start(50)
-            SetAngle(100)
+            pass
 	    
     A0 = A
     
-# Début code changement de bloc/arme en main
+# clique droite de la souris, créer une brique
 
-    if not S and S0:
-        pyautogui.vscroll(-1)
+    if not B and B0:
+            pwmR.ChangeDutyCycle(11)
+            time.sleep(0.75)
+            pwmR.ChangeDutyCycle(8)
+            
+    if B and not B0:
+            pass
+            
+    B0 = B
 
-    S = S0
 
-# Début code saut et vol
-
-    if not J and J0:
-        pyautogui.keyDown('space')
     
-    if J and not J0:
-        pyautogui.keyUp('space')
-        
-    J0 = J
 
-# Début code rotation personnage
+## code rotation personnage pwm et buttonC et buttonD
+
+
+    C = gpio.input(buttonC)
+    D = gpio.input(buttonD)
+
+### tire le miservo vers 12.5
+
+    if not C and C0 and x < 12.5:
+        pwm.ChangeDutyCycle(x+2.5)
+        x = x+2.5
+            
+    if C and not C0:
+            pass 
+    C0 = C
+
+    # tire le mini servo vers 2.5
     
-  
-  
-# fin code
-pwm.stop()
-gpio.cleanup()
+    if not D and D0 and x > 2.5:
+        pwm.ChangeDutyCycle(x-2.5)
+        x = x-2.5
+
+    if D and not D0:
+        pass		
+    D0 = D

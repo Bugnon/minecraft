@@ -93,8 +93,10 @@ lowerR = [0, 0, 60]
 upperR = [50, 70, 255]
 lowerB = [60, 0, 0]
 upperB = [255, 70, 50]
+
 redmin = 50
 bluemin = 30
+
 RED = (0, 0, 255)
 BLUE = (255, 0, 0)
 YELLOW = (0, 255, 255)
@@ -354,6 +356,7 @@ start = 0      # 0 = neutral, 1 = execution, -1= stop Magic_wand.py
 # ---------------------------------------
 # loop
 # ---------------------------------------
+init_camera():
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture,

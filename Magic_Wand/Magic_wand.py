@@ -1,89 +1,113 @@
-# Authors:Albert and Ludovic
-# Date: 03.2018
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                             #
+#                         MAGIC WAND, MINECRABRACADABRA                       #
+#                                                                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# Affiliation : Gymnase du Bugnon
-# Year 2017-2018
-# Classe : OC-Informatique
-# =======================================
-# ---------------------------------------
-# import the necessary packages
-# ---------------------------------------
-from picamera.array import PiRGBArray
-from picamera import PiCamera
-import time
-import cv2
-import numpy as np
-import os
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#      Auteurs:   Albert et Ludovic
+#  Affiliation:   Gymnase du Bugnon
+#        Annee:   2017-2018
+#       Classe:   OC-Informatique
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+# =========================================================================== #
+#                            Description du Projet                            #
+# =========================================================================== #
+"""
+A completer
+
+Minecraft et une camera enclenche
+"""
+# =========================================================================== #
+#                                Code du Projet                               #
+# =========================================================================== #
+
+# --------------------------------------------------------------------------- #
+# Importation des modules necessaires
+# --------------------------------------------------------------------------- #
+
+# Le module permettant d'accéder à minecraft-pi
 from mcpi.minecraft import Minecraft
 
-mcok = True  # If we want to make test without minecraft: False
+# Les modules permettant d'utiliser la caméra
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 
-if mcok:
-    mc = Minecraft.create()
+# Les modules permettant de faire le traitement de l'image
+import cv2
+import numpy as np
 
-# ---------------------------------------
-# import minecraft construction functions
-# ---------------------------------------
-if mcok:
-    import Bridge
-    import House
-    import Midas
-    import Mine
+# Le  module permettant d'utiliser le temps
+import time
 
-# ---------------------------------------
-# initialize the camera and grab a reference to the raw camera
-# ---------------------------------------
-# capture
-camera = PiCamera()
+# Le module permettant d'executer une fonction dans un terminal linux
+import os
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-def init_camera():
-    global camera
-    # camera.resolution = (640, 480)
-    camera.resolution = (320, 240)
-    camera.framerate = 32
-    rawCapture = PiRGBArray(camera, size=(320, 240))
-    time.sleep(1)
-    g = camera.awb_gains
-    camera.awb_mode = 'off'
-    camera.awb_gains = g
+# importation des quatres fonctions de construction
+import Bridge
+import House
+import Midas
+import Mine
 
-# ---------------------------------------
-# import minecraft construction functions
-# ---------------------------------------
-if mcok:
-    import Bridge
-    import House
-    import Midas
-    import Mine
-
-# ---------------------------------------
-# initialize the camera and grab a reference to the raw camera
-# ---------------------------------------
-# capture
-camera = PiCamera()
+# creer une liaison avec minecraft
+mc = Minecraft.create()
+# --------------------------------------------------------------------------- #
+# Initialisation de la camera
+# --------------------------------------------------------------------------- #
+camera = PiCamera()  # creation de la liaison avec la camera
 
 
 def init_camera():
+    """Initalise la camera du raspberry avec les parametres suivant:
+
+- resolution: 320 x 240 pixels
+- taux de trame: 32
+- desactivation de gains automatique
+"""
+    # enregistrement dans une variable globale => utiliser apres
     global camera
-    # camera.resolution = (640, 480)
+
     camera.resolution = (320, 240)
     camera.framerate = 32
+
     rawCapture = PiRGBArray(camera, size=(320, 240))
-    time.sleep(1)
-    g = camera.awb_gains
+
+    time.sleep(1)  # pour que la camera puisse se "calibrer"
+
+    # Desactivation du gains
+    gains = camera.awb_gains
     camera.awb_mode = 'off'
-    camera.awb_gains = g
+    camera.awb_gains = gains
+# --------------------------------------------------------------------------- #
+# Initialisation des valeurs
+# --------------------------------------------------------------------------- #
+taille_fenetre = 620
+waiting_time = 2
 
-# ---------------------------------------
-# import minecraft construction functions
-# ---------------------------------------
-if mcok:
-    import Bridge
-    import House
-    import Midas
-    import Mine
+lowerR = [0, 0, 60]
+upperR = [50, 70, 255]
+lowerB = [60, 0, 0]
+upperB = [255, 70, 50]
+redmin = 50
+bluemin = 30
+RED = (0, 0, 255)
+BLUE = (255, 0, 0)
+YELLOW = (0, 255, 255)
 
+regions_blue = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
+regions_red = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
+
+flags = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0, 'button5': 0,
+         'button6': 0, 'button7': 0, 'button8': 0, 'button9': 0, 'button10': 0}
+
+time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
+             'button5': 0, 'button6': 0, 'button7': 0, 'button8': 0,
+             'button9': 0, 'button10': 0}
 # ---------------------------------------
 # functions
 # ---------------------------------------
@@ -208,60 +232,50 @@ def exefct():
 
     if flags['button1'] is True:  # 1 = True = beeing pressed
         param1 = True
-        if mcok:
-            mc.postToChat("Size: Big")
+        mc.postToChat("Size: Big")
     if flags['button2'] is True:  # 1 = True = beeing pressed
         mc_funct = 1
-        if mcok:
-            mc.postToChat("Function: Bridge")
+        mc.postToChat("Function: Bridge")
     if flags['button3'] is True:  # 1 = True = beeing pressed
-        if mcok:
-            if mc_funct == 0:
-                mc.postToChat("You need to choose a function!")
-            if mc_funct == 1:
-                mc.postToChat("Working, wait...")
-                fctBridge(param1, param2)
-                mc.postToChat("Work done!")
-            if mc_funct == 2:
-                mc.postToChat("Working, wait...")
-                fctHouse(param1, param2)
-                mc.postToChat("Work done!")
-            if mc_funct == 3:
-                mc.postToChat("Working, wait...")
-                fctMidas(param1, param2)
-                mc.postToChat("Work done!")
-            if mc_funct == 4:
-                mc.postToChat("Working, wait...")
-                fctMine(param1, param2)
-                mc.postToChat("Work done!")
+        if mc_funct == 0:
+            mc.postToChat("You need to choose a function!")
+        if mc_funct == 1:
+            mc.postToChat("Working, wait...")
+            fctBridge(param1, param2)
+            mc.postToChat("Work done!")
+        if mc_funct == 2:
+            mc.postToChat("Working, wait...")
+            fctHouse(param1, param2)
+            mc.postToChat("Work done!")
+        if mc_funct == 3:
+            mc.postToChat("Working, wait...")
+            fctMidas(param1, param2)
+            mc.postToChat("Work done!")
+        if mc_funct == 4:
+            mc.postToChat("Working, wait...")
+            fctMine(param1, param2)
+            mc.postToChat("Work done!")
     if flags['button4'] is True:  # 1 = True = beeing pressed
         param2 = True
-        if mcok:
-            mc.postToChat("Material: 2")
+        mc.postToChat("Material: 2")
     if flags['button5'] is True:  # 1 = True = beeing pressed
         mc_funct = 3
-        if mcok:
-            mc.postToChat("Function: Midas")
+        mc.postToChat("Function: Midas")
     if flags['button6'] is True:  # 1 = True = beeing pressed
         param1 = False
-        if mcok:
-            mc.postToChat("Size: Small")
+        mc.postToChat("Size: Small")
     if flags['button7'] is True:  # 1 = True = beeing pressed
         mc_funct = 2
-        if mcok:
-            mc.postToChat("Function: House")
+        mc.postToChat("Function: House")
     if flags['button8'] is True:  # 1 = True = beeing pressed
         start = -1
-        if mcok:
-            mc.postToChat("Good by! See you soon!")
+        mc.postToChat("Good by! See you soon!")
     if flags['button9'] is True:  # 1 = True = beeing pressed
         param2 = False
-        if mcok:
-            mc.postToChat("Material: 1")
+        mc.postToChat("Material: 1")
     if flags['button10'] is True:  # 1 = True = beeing pressed
         mc_funct = 4
-        if mcok:
-            mc.postToChat("Function: Mine")
+        mc.postToChat("Function: Mine")
 
 
 def fctBridge(p1, p2):
@@ -329,31 +343,6 @@ def fctMidas(p1, p2):
     Midas.Midascube(xp, yp, zp, s, idb)
     os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Midas.mp3')
 
-# ---------------------------------------
-# initialisation of values
-# ---------------------------------------
-taille_fenetre = 620
-waiting_time = 2
-
-lowerR = [0, 0, 60]
-upperR = [50, 70, 255]
-lowerB = [60, 0, 0]
-upperB = [255, 70, 50]
-redmin = 50
-bluemin = 30
-RED = (0, 0, 255)
-BLUE = (255, 0, 0)
-YELLOW = (0, 255, 255)
-
-regions_blue = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
-regions_red = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
-
-flags = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0, 'button5': 0,
-         'button6': 0, 'button7': 0, 'button8': 0, 'button9': 0, 'button10': 0}
-
-time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
-             'button5': 0, 'button6': 0, 'button7': 0, 'button8': 0,
-             'button9': 0, 'button10': 0}
 # ---------------------------------------
 # initialisation param minecraft
 # ---------------------------------------

@@ -16,11 +16,11 @@
 # =========================================================================== #
 #                            Description du Projet                            #
 # =========================================================================== #
-"""
-A completer
-
-Minecraft et une camera enclenche
-"""
+##"""
+##A completer
+##
+##Minecraft et une camera enclenche
+##"""
 # =========================================================================== #
 #                               Code du Projet                                #
 # =========================================================================== #
@@ -49,10 +49,7 @@ import os
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 # importation des quatres fonctions de construction
-import Bridge
-import House
-import Midas
-import Mine
+from Functions import Bridge, House, Midas, Mine
 
 # creer une liaison avec minecraft
 mc = Minecraft.create()
@@ -75,6 +72,7 @@ def init_camera():
     camera.resolution = (320, 240)
     camera.framerate = 32
 
+    global rawCapture
     rawCapture = PiRGBArray(camera, size=(320, 240))
 
     time.sleep(1)  # pour que la camera puisse se "calibrer"
@@ -83,6 +81,7 @@ def init_camera():
     gains = camera.awb_gains
     camera.awb_mode = 'off'
     camera.awb_gains = gains
+
 # --------------------------------------------------------------------------- #
 # Initialisation des valeurs
 # --------------------------------------------------------------------------- #
@@ -356,7 +355,7 @@ start = 0      # 0 = neutral, 1 = execution, -1= stop Magic_wand.py
 # ---------------------------------------
 # loop
 # ---------------------------------------
-init_camera():
+init_camera()
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture,

@@ -82,33 +82,7 @@ def init_camera():
     camera.awb_mode = 'off'
     camera.awb_gains = gains
 
-# --------------------------------------------------------------------------- #
-# Initialisation des valeurs
-# --------------------------------------------------------------------------- #
-taille_fenetre = 620
-waiting_time = 2
 
-lowerR = [0, 0, 60]
-upperR = [50, 70, 255]
-lowerB = [60, 0, 0]
-upperB = [255, 70, 50]
-
-redmin = 50
-bluemin = 30
-
-RED = (0, 0, 255)
-BLUE = (255, 0, 0)
-YELLOW = (0, 255, 255)
-
-regions_blue = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
-regions_red = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
-
-flags = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0, 'button5': 0,
-         'button6': 0, 'button7': 0, 'button8': 0, 'button9': 0, 'button10': 0}
-
-time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
-             'button5': 0, 'button6': 0, 'button7': 0, 'button8': 0,
-             'button9': 0, 'button10': 0}
 # ---------------------------------------
 # functions
 # ---------------------------------------
@@ -116,61 +90,62 @@ time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
 
 def detect_colour(img, colour):
     """ Detect colors which are in the range [lower, upper] """
-    if colour == "RED":
-        lower = lowerR
-        upper = upperR
-    if colour == "BLUE":
-        lower = lowerB
-        upper = upperB
-    lower = np.array(lower, dtype="uint8")
-    upper = np.array(upper, dtype="uint8")
+    if colour =="RED":
+        lower=lowerR
+        upper=upperR
+    if colour=="BLUE":
+        lower=lowerB
+        upper=upperB
+    
+    lower = np.array(lower, dtype = "uint8")
+    upper = np.array(upper, dtype = "uint8")
+     
     mask = cv2.inRange(img, lower, upper)
-    output = cv2.bitwise_and(img, img, mask=mask)
-#    cv2.imshow("Mask", mask)
-#    cv2.imshow("Detect color", np.hstack([img, output]))
-
-    LUm = mask[0:120, 0:120]
-    LDm = mask[120:240, 0:120]
-    Midm = mask[0:240, 120:200]
-    RUm = mask[0:120, 240:]
-    RDm = mask[120:240, 240:]
-
-    regions = [LUm, LDm, Midm, RUm, RDm]
+    output = cv2.bitwise_and(img, img, mask = mask)
+##    cv2.imshow("Mask", mask)
+##    cv2.imshow("Detect color", np.hstack([img, output]))
+    
+    LUm = mask[0:120,0:120]
+    LDm = mask[120:240,0:120]
+    Midm = mask[0:240,120:200]
+    RUm= mask[0:120,240:]
+    RDm = mask[120:240,240:]
+    
+    regions =[LUm, LDm, Midm, RUm, RDm]
     if colour == "RED":
         for i in range(5):
-            regions_red[i] = np.average(regions[i]) > redmin
-    if colour == "BLUE":
+            regions_red[i]=np.average(regions[i])>redmin
+    if colour=="BLUE":
         for i in range(5):
-            regions_blue[i] = np.average(regions[i]) > bluemin
-#        print(regions_blue)
+            regions_blue[i]=np.average(regions[i])>bluemin
+##        print(regions_blue)
 
 
-def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
+def resize(image,width = None,height = None, inter = cv2.INTER_AREA):
     dim = None
-    (h, w) = image.shape[:2]
+    (h,w) = image.shape[:2]
     if width is None and height is None:
         return image
-
+    
     if width is None:
         r = height / float(h)
         dim = (int(w*r), height)
-
+        
     else:
-        r = width / float(w)
+        r= width / float(w)
         dim = width, int(h*r)
-
-    resized = cv2.resize(image, dim, interpolation=inter)
-
+        
+    resized = cv2.resize (image,dim,interpolation = inter)
+    
     return resized
 
 
-def Colorize(img, colour, FULL=5):
-    a = img.shape[1]
-    b = img.shape[0]
+def Colorize(img,colour, FULL= 5):
+    a=img.shape[1]
+    b=img.shape[0]
     if FULL == "FULL":
-        FULL = -1
-    return cv2.rectangle(img, (0, 0), (a, b), colour, FULL)
-
+        FULL=-1
+    return cv2.rectangle(img,(0,0),(a,b),colour,FULL)
 
 def button_fct_pressed(n):
     """Test if nb (button + number of button) is pressed, released, or beeing pressed.
@@ -225,6 +200,7 @@ n: int (0..9)
         if regions_red[n]==False:   
             flags[nb]=0
             return
+
 
 
 def exefct():
@@ -342,7 +318,33 @@ def fctMidas(p1, p2):
 
     Midas.Midascube(xp, yp, zp, s, idb)
     os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Midas.mp3')
+# --------------------------------------------------------------------------- #
+# Initialisation des valeurs
+# --------------------------------------------------------------------------- #
+taille_fenetre = 620
+waiting_time = 2
 
+lowerR = [0, 0, 60]
+upperR = [50, 70, 255]
+lowerB = [60, 0, 0]
+upperB = [255, 70, 50]
+
+redmin = 50
+bluemin = 30
+
+RED = (0, 0, 255)
+BLUE = (255, 0, 0)
+YELLOW = (0, 255, 255)
+
+regions_blue = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
+regions_red = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
+
+flags = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0, 'button5': 0,
+         'button6': 0, 'button7': 0, 'button8': 0, 'button9': 0, 'button10': 0}
+
+time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
+             'button5': 0, 'button6': 0, 'button7': 0, 'button8': 0,
+             'button9': 0, 'button10': 0}
 # ---------------------------------------
 # initialisation param minecraft
 # ---------------------------------------
@@ -422,3 +424,4 @@ for f in camera.capture_continuous(rawCapture,
 
     if start == -1:
         break
+

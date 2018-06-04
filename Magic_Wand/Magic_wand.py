@@ -16,11 +16,11 @@
 # =========================================================================== #
 #                            Description du Projet                            #
 # =========================================================================== #
-##"""
-##A completer
-##
-##Minecraft et une camera enclenche
-##"""
+"""
+A completer
+
+Minecraft et une camera enclenche
+"""
 # =========================================================================== #
 #                               Code du Projet                                #
 # =========================================================================== #
@@ -56,6 +56,7 @@ mc = Minecraft.create()
 # --------------------------------------------------------------------------- #
 # Initialisation de la camera
 # --------------------------------------------------------------------------- #
+
 
 def init_camera():
     """Initalise la camera du raspberry avec les parametres suivant:
@@ -173,57 +174,60 @@ def Colorize(img, colour, FULL=5):
 
 
 def button_fct_pressed(n):
-    """Test if nb (button + number of button) is pressed, released, or beeing pressed.
+    """Test if nb (button + number of button) is pressed, released,
+    or beeing pressed.
 transform button flags :
-        
+
 n: int (0..9)
 """
-    nb='button'+str(n+1)
-    
-    if n<5:
-        if (flags[nb]==1 or flags[nb]=='e') and time_flag[nb]> time.time():
-            liste[n]= Colorize(liste[n],BLUE,"FULL")
-            flags[nb]='e'
+    nb = 'button' + str(n+1)
+
+    if n < 5:
+        if (flags[nb] == 1 or flags[nb] == 'e')
+        and time_flag[nb] > time.time():
+            liste[n] = Colorize(liste[n], BLUE, "FULL")
+            flags[nb] = 'e'
             return
-        if flags[nb]=='e' and time_flag[nb]< time.time():
-            liste[n]= Colorize(liste[n],BLUE,"FULL")
-            flags[nb]=0
-        if regions_blue[n]==True:
-            liste[n]= Colorize(liste[n],BLUE)
-            if flags[nb]==0 and time_flag[nb]< time.time():
-                flags[nb]=' '
-                time_flag[nb]=waiting_time + time.time()
+        if flags[nb] == 'e' and time_flag[nb] < time.time():
+            liste[n] = Colorize(liste[n], BLUE, "FULL")
+            flags[nb] = 0
+        if regions_blue[n] is True:
+            liste[n] = Colorize(liste[n], BLUE)
+            if flags[nb] == 0 and time_flag[nb] < time.time():
+                flags[nb] = ' '
+                time_flag[nb] = waiting_time + time.time()
                 return
-            if flags[nb]==' ' and time_flag[nb]< time.time():
-                flags[nb]=1
-                time_flag[nb]=waiting_time + time.time()
-                liste[n]= Colorize(liste[n],BLUE,"FULL")
+            if flags[nb] == ' ' and time_flag[nb] < time.time():
+                flags[nb] = 1
+                time_flag[nb] = waiting_time + time.time()
+                liste[n] = Colorize(liste[n], BLUE, "FULL")
                 return
-        if regions_blue[n]==False:   
-            flags[nb]=0
+        if regions_blue[n] is False:
+            flags[nb] = 0
             return
-    if n>4:
-        n=n-5
-        if (flags[nb]==1 or flags[nb]=='e') and time_flag[nb]> time.time():
-            liste[n]= Colorize(liste[n],RED,"FULL")
-            flags[nb]='e'
+    if n > 4:
+        n = n - 5
+        if (flags[nb] == 1 or flags[nb] == 'e')
+        and time_flag[nb] > time.time():
+            liste[n] = Colorize(liste[n], RED, "FULL")
+            flags[nb] = 'e'
             return
-        if flags[nb]=='e' and time_flag[nb]< time.time():
-            liste[n]= Colorize(liste[n],RED,"FULL")
-            flags[nb]=0
-        if regions_red[n]==True:
-            liste[n]= Colorize(liste[n],RED)
-            if flags[nb]==0 and time_flag[nb]< time.time():
-                flags[nb]=' '
-                time_flag[nb]=waiting_time + time.time()
+        if flags[nb] == 'e' and time_flag[nb] < time.time():
+            liste[n] = Colorize(liste[n], RED, "FULL")
+            flags[nb] = 0
+        if regions_red[n] is True:
+            liste[n] = Colorize(liste[n], RED)
+            if flags[nb] == 0 and time_flag[nb] < time.time():
+                flags[nb] = ' '
+                time_flag[nb] = waiting_time + time.time()
                 return
-            if flags[nb]==' ' and time_flag[nb]< time.time():
-                flags[nb]=1
-                time_flag[nb]=waiting_time + time.time()
-                liste[n]= Colorize(liste[n],RED,"FULL")
+            if flags[nb] == ' ' and time_flag[nb] < time.time():
+                flags[nb] = 1
+                time_flag[nb] = waiting_time + time.time()
+                liste[n] = Colorize(liste[n], RED, "FULL")
                 return
-        if regions_red[n]==False:   
-            flags[nb]=0
+        if regions_red[n] is False:
+            flags[nb] = 0
             return
 
 

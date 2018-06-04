@@ -14,7 +14,7 @@
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 # =========================================================================== #
-#                            Description du Projet                            #
+#                         1. Description du Projet                            #
 # =========================================================================== #
 """
 A completer
@@ -22,11 +22,11 @@ A completer
 Minecraft et une camera enclenche
 """
 # =========================================================================== #
-#                               Code du Projet                                #
+#                            2. Code du Projet                                #
 # =========================================================================== #
 
 # --------------------------------------------------------------------------- #
-# Importation des modules necessaires
+# 2.1 Importation des modules necessaires
 # --------------------------------------------------------------------------- #
 
 # Le module permettant d'accéder à minecraft-pi
@@ -54,7 +54,7 @@ from Functions import Bridge, House, Midas, Mine
 # creer une liaison avec minecraft
 mc = Minecraft.create()
 # --------------------------------------------------------------------------- #
-# Initialisation de la camera
+# 2.2 Initialisation de la camera
 # --------------------------------------------------------------------------- #
 
 
@@ -84,69 +84,125 @@ def init_camera():
     camera.awb_gains = gains
 
 # --------------------------------------------------------------------------- #
-# Initialisation des valeurs
+# 2.3 Parametrage des valeurs
 # --------------------------------------------------------------------------- #
-taille_fenetre = 620
-waiting_time = 2
+taille_fenetre = 620  # largueur de la fenetre de visualisation de la camera
 
+# temps de marge avant l'execution d'un fonction; rester avec la couleur dans 
+# la meme place pour qu'elle s'execute
+waiting_time = 2  
+
+# Les valeurs basses et hautes (lower/upper) du rouge et du bleu (R/B)
+# pour la detection
 lowerR = [0, 0, 60]
 upperR = [50, 70, 255]
 lowerB = [60, 0, 0]
 upperB = [255, 70, 50]
 
+# Quel doit etre le pourcentage minimum de bleu etde rouge pour dire que la
+# baguette est dans la zone
 redmin = 50
 bluemin = 30
 
+# Definition des couleurs pour les utiliser par exemple pour colorier
+# Cela permet de moins s'embeter avec les chiffres et rendre plus lisible
 RED = (0, 0, 255)
 BLUE = (255, 0, 0)
 YELLOW = (0, 255, 255)
 
+# --------------------------------------------------------------------------- #
+# 2.4 Initialisation des valeurs
+# --------------------------------------------------------------------------- #
+
+# Les  "cases" ou la couleur (blue/red) est presente (True/False)
 regions_blue = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
 regions_red = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
 
+# Chaque case avec chaque couleur correspond a un boutton. Ils sont soit:
+# - 0    le bouton n'est pas active
+# - ' '  le bouton est en attente d'execution
+# - 1    le bouton est enclenche
+# - 'e'  le bouton vient d'etre enclenche
 flags = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0, 'button5': 0,
          'button6': 0, 'button7': 0, 'button8': 0, 'button9': 0, 'button10': 0}
 
+# liste d'enregistrement du temps auquel le bouton est detecte
+# cf. jupyter notebook + button_fct_pressed(n)
 time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
              'button5': 0, 'button6': 0, 'button7': 0, 'button8': 0,
              'button9': 0, 'button10': 0}
-# ---------------------------------------
-# functions
-# ---------------------------------------
+"""
+correspondance des boutons: (cf. jupyter notebook pour schéma)
+                        ------------------------------
+                        BLUE|Red| Case correspondante
+                        ------------------------------
+                        1.  |6. | Haut gauche (LU)   |
+                        2.  |7. | Bas Gauche (LD)    |
+                        3.  |8. | millieu (Mid)      |
+                        4.  |9. | Haut droit (RU)    |
+                        5.  |10.| Bas droit (RD)     |
 
+"""
+# --------------------------------------------------------------------------- #
+# 2.5 Definition des fonctions travaillant sur image
+# --------------------------------------------------------------------------- #
 
 def detect_colour(img, colour):
-    """ Detect colors which are in the range [lower, upper] """
+    """ Detection des couleurs qui sont entre lower et upper dans chaque case
+qui est entre lower et upper (in the range [lower, upper]).
+
+enregistre en True/False dans regions_red ou regions_blue les cases ou se
+trouve la couleur voulue
+
+img: image
+couleur: "RED"/"BLUE"
+"""
     if colour == "RED":
         lower = lowerR
         upper = upperR
     if colour == "BLUE":
         lower = lowerB
         upper = upperB
+
     lower = np.array(lower, dtype="uint8")
     upper = np.array(upper, dtype="uint8")
+    
+    #cree un mask qui enleve tout ce qui n'est pas entre lower et upper
     mask = cv2.inRange(img, lower, upper)
-    output = cv2.bitwise_and(img, img, mask=mask)
+
+    #Enlever les '#' pour avoir un apercu des operations
+#    output = cv2.bitwise_and(img, img, mask=mask)
 #    cv2.imshow("Mask", mask)
 #    cv2.imshow("Detect color", np.hstack([img, output]))
 
+    # Separation de l'image en partie (dim= LU, LD, Mid, RU, RD) => liste
     LUm = mask[0:120, 0:120]
     LDm = mask[120:240, 0:120]
     Midm = mask[0:240, 120:200]
     RUm = mask[0:120, 240:]
     RDm = mask[120:240, 240:]
-
     regions = [LUm, LDm, Midm, RUm, RDm]
+    
+    # enregistre (True/False) dans les listes predifinies en 2.4 afin qu'on
+    #puisse utiliser pour executer les fonction dans 'button_fct_pressed(n)'
     if colour == "RED":
         for i in range(5):
             regions_red[i] = np.average(regions[i]) > redmin
+        #print(regions_red)  # si on veut voir la liste 
     if colour == "BLUE":
         for i in range(5):
             regions_blue[i] = np.average(regions[i]) > bluemin
-#        print(regions_blue)
+        #print(regions_blue)  # si on veut voir la liste 
 
 
 def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
+    """Source: tire du cours sur cv2
+redimensionne une image avec les nouvelles dimensions width, height
+
+image: image
+width: int
+height: int
+"""
     dim = None
     (h, w) = image.shape[:2]
     if width is None and height is None:
@@ -166,13 +222,23 @@ def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 
 def Colorize(img, colour, FULL=5):
+    """Colorie le cadre de l'image (img) avec la couleur (colour).
+Taille du cadre = FULL (en px).
+Si FULL est égal à -1 ou "FULL" l'image est completement coloriee.
+
+img: image
+colour: tuple
+Full: int ou "FULL"
+"""
     a = img.shape[1]
     b = img.shape[0]
     if FULL == "FULL":
         FULL = -1
     return cv2.rectangle(img, (0, 0), (a, b), colour, FULL)
 
-
+# --------------------------------------------------------------------------- #
+# 2.6 Definition des fonctions "d'exectution"
+# --------------------------------------------------------------------------- #
 def button_fct_pressed(n):
     """Test if nb (button + number of button) is pressed, released,
     or beeing pressed.
@@ -183,15 +249,15 @@ n: int (0..9)
     nb = 'button' + str(n+1)
 
     if n < 5:
-        if (flags[nb] == 1 or flags[nb] == 'e')
-        and time_flag[nb] > time.time():
+        if ((flags[nb] == 1 or flags[nb] == 'e')
+        and time_flag[nb] > time.time()):
             liste[n] = Colorize(liste[n], BLUE, "FULL")
             flags[nb] = 'e'
             return
         if flags[nb] == 'e' and time_flag[nb] < time.time():
             liste[n] = Colorize(liste[n], BLUE, "FULL")
             flags[nb] = 0
-        if regions_blue[n] is True:
+        if regions_blue[n] == True:
             liste[n] = Colorize(liste[n], BLUE)
             if flags[nb] == 0 and time_flag[nb] < time.time():
                 flags[nb] = ' '
@@ -202,20 +268,20 @@ n: int (0..9)
                 time_flag[nb] = waiting_time + time.time()
                 liste[n] = Colorize(liste[n], BLUE, "FULL")
                 return
-        if regions_blue[n] is False:
+        if regions_blue[n] == False:
             flags[nb] = 0
             return
     if n > 4:
         n = n - 5
-        if (flags[nb] == 1 or flags[nb] == 'e')
-        and time_flag[nb] > time.time():
+        if ((flags[nb] == 1 or flags[nb] == 'e')
+        and time_flag[nb] > time.time()):
             liste[n] = Colorize(liste[n], RED, "FULL")
             flags[nb] = 'e'
             return
         if flags[nb] == 'e' and time_flag[nb] < time.time():
             liste[n] = Colorize(liste[n], RED, "FULL")
             flags[nb] = 0
-        if regions_red[n] is True:
+        if regions_red[n] == True:
             liste[n] = Colorize(liste[n], RED)
             if flags[nb] == 0 and time_flag[nb] < time.time():
                 flags[nb] = ' '
@@ -226,7 +292,7 @@ n: int (0..9)
                 time_flag[nb] = waiting_time + time.time()
                 liste[n] = Colorize(liste[n], RED, "FULL")
                 return
-        if regions_red[n] is False:
+        if regions_red[n] == False:
             flags[nb] = 0
             return
 
@@ -234,13 +300,13 @@ n: int (0..9)
 def exefct():
     global mc_funct, param1, param2, start
 
-    if flags['button1'] is True:  # 1 = True = beeing pressed
+    if flags['button1'] == True:  # 1 = True = beeing pressed
         param1 = True
         mc.postToChat("Size: Big")
-    if flags['button2'] is True:  # 1 = True = beeing pressed
+    if flags['button2'] == True:  # 1 = True = beeing pressed
         mc_funct = 1
         mc.postToChat("Function: Bridge")
-    if flags['button3'] is True:  # 1 = True = beeing pressed
+    if flags['button3'] == True:  # 1 = True = beeing pressed
         if mc_funct == 0:
             mc.postToChat("You need to choose a function!")
         if mc_funct == 1:
@@ -259,28 +325,30 @@ def exefct():
             mc.postToChat("Working, wait...")
             fctMine(param1, param2)
             mc.postToChat("Work done!")
-    if flags['button4'] is True:  # 1 = True = beeing pressed
+    if flags['button4'] == True:  # 1 = True = beeing pressed
         param2 = True
         mc.postToChat("Material: 2")
-    if flags['button5'] is True:  # 1 = True = beeing pressed
+    if flags['button5'] == True:  # 1 = True = beeing pressed
         mc_funct = 3
         mc.postToChat("Function: Midas")
-    if flags['button6'] is True:  # 1 = True = beeing pressed
+    if flags['button6'] == True:  # 1 = True = beeing pressed
         param1 = False
         mc.postToChat("Size: Small")
-    if flags['button7'] is True:  # 1 = True = beeing pressed
+    if flags['button7'] == True:  # 1 = True = beeing pressed
         mc_funct = 2
         mc.postToChat("Function: House")
-    if flags['button8'] is True:  # 1 = True = beeing pressed
+    if flags['button8'] == True:  # 1 = True = beeing pressed
         start = -1
         mc.postToChat("Good by! See you soon!")
-    if flags['button9'] is True:  # 1 = True = beeing pressed
+    if flags['button9'] == True:  # 1 = True = beeing pressed
         param2 = False
         mc.postToChat("Material: 1")
-    if flags['button10'] is True:  # 1 = True = beeing pressed
+    if flags['button10'] == True:  # 1 = True = beeing pressed
         mc_funct = 4
         mc.postToChat("Function: Mine")
-
+# --------------------------------------------------------------------------- #
+# 2.7 Definition des fonctions d'exectution des constructions
+# --------------------------------------------------------------------------- #
 
 def fctBridge(p1, p2):
     xp, yp, zp = mc.player.getTilePos()
@@ -391,13 +459,11 @@ for f in camera.capture_continuous(rawCapture,
     for i in range(10):
         button_fct_pressed(i)
 
-#        if regions_red[i]==True:
-#            liste[i]= Colorize(liste[i],RED)
-#            button_fct_pressed(i+5)
-
     exefct()
     print(flags['button1'], flags['button2'], flags['button3'],
-          flags['button4'], flags['button5'])
+          flags['button4'], flags['button5'], flags['button6'],
+          flags['button7'], flags['button8'], flags['button9'],
+          flags['button10'])
 
     Right2 = np.vstack([RU, RD])
     Left2 = np.vstack([LU, LD])

@@ -29,10 +29,10 @@ Minecraft et une camera enclenche
 # 2.1 Importation des modules necessaires
 # --------------------------------------------------------------------------- #
 
-# Le module permettant d'accéder à minecraft-pi
+# Le module permettant d'acceder a minecraft-pi
 from mcpi.minecraft import Minecraft
 
-# Les modules permettant d'utiliser la caméra
+# Les modules permettant d'utiliser la camera
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
@@ -123,7 +123,7 @@ regions_red = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
 # - ' '  le bouton est en attente d'execution
 # - 1    le bouton est enclenche
 # - 'e'  le bouton vient d'etre enclenche / attente de fin de coloriage + temps
-#                                           d'attente avant réexecution
+#                                           d'attente avant reexecution
 flags = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0, 'button5': 0,
          'button6': 0, 'button7': 0, 'button8': 0, 'button9': 0, 'button10': 0}
 
@@ -133,7 +133,7 @@ time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
              'button5': 0, 'button6': 0, 'button7': 0, 'button8': 0,
              'button9': 0, 'button10': 0}
 """
-correspondance des boutons: (cf. jupyter notebook pour schéma)
+correspondance des boutons: (cf. jupyter notebook pour schema)
 
                         ------------------------------
                         BLUE|Red| Case correspondante
@@ -146,7 +146,7 @@ correspondance des boutons: (cf. jupyter notebook pour schéma)
 
 """
 
-# Initialisation valeurs des paramètres et fonctions pour minecraft
+# Initialisation valeurs des parametres et fonctions pour minecraft
 # --------------------------------------------------------------------------- #
 param1 = False  # False = petit, True = grand
 param2 = False  # False = materiaux 1, True = materiaux 2
@@ -235,7 +235,7 @@ height: int
 def Colorize(img, colour, FULL=5):
     """Colorie le cadre de l'image (img) avec la couleur (colour).
 Taille du cadre = FULL (en px).
-Si FULL est égal à -1 ou "FULL" l'image est completement coloriee.
+Si FULL est egal a -1 ou "FULL" l'image est completement coloriee.
 
 img: image
 colour: tuple
@@ -253,16 +253,16 @@ Full: int ou "FULL"
 
 
 def button_fct_pressed(n):
-    """ Test si le bouton doit être
+    """ Test si le bouton doit etre
  - 0    le bouton n'est pas active
  - ' '  le bouton est en attente d'execution
  - 1    le bouton est enclenche
  - 'e'  le bouton vient d'etre enclenche / attente de fin de coloriage + temps
-                                           d'attente avant réexecution
+                                           d'attente avant reexecution
 
 Colorie les cases en rouge ou bleu : pleinement si : 1 ou 'e'
-                                     encadré si  ' '
- cf. jupyter notebook pour des schémas explicatifs
+                                     encadre si  ' '
+ cf. jupyter notebook pour des schemas explicatifs
 
  n: int entre 0 et 9
 """
@@ -273,9 +273,9 @@ Colorie les cases en rouge ou bleu : pleinement si : 1 ou 'e'
     # On commence par travailler par les boutons "bleus" (n < 5)
     if n < 5:
 
-        # Si le boutons est enclenché ou entrain d'enclenche et que le temps
+        # Si le boutons est enclenche ou entrain d'enclenche et que le temps
         # d'attente de fin d'execution n'est pas fini, la case se fait colorier
-        # en bleu et si le bouton valait 1 il est transformé en 'e'
+        # en bleu et si le bouton valait 1 il est transforme en 'e'
         if ((flags[nb] == 1 or flags[nb] == 'e')
            and time_flag[nb] > time.time()):
             liste[n] = Colorize(liste[n], BLUE, "FULL")
@@ -283,7 +283,7 @@ Colorie les cases en rouge ou bleu : pleinement si : 1 ou 'e'
             return
 
         # Si le bouton est en attente de fin de coloriage, et que le temps est
-        # dépasse la case est coloriee une derniere fois et le bouton et a
+        # depasse la case est coloriee une derniere fois et le bouton et a
         # nouveau desactive
         if flags[nb] == 'e' and time_flag[nb] < time.time():
             liste[n] = Colorize(liste[n], BLUE, "FULL")
@@ -320,9 +320,9 @@ Colorie les cases en rouge ou bleu : pleinement si : 1 ou 'e'
         # Pour pouvoir travailler dans la liste rouge
         n = n - 5
 
-        # Si le boutons est enclenché ou entrain d'enclenche et que le temps
+        # Si le boutons est enclenche ou entrain d'enclenche et que le temps
         # d'attente de fin d'execution n'est pas fini, la case se fait colorier
-        # en rouge et si le bouton valait 1 il est transformé en 'e'
+        # en rouge et si le bouton valait 1 il est transforme en 'e'
         if ((flags[nb] == 1 or flags[nb] == 'e')
            and time_flag[nb] > time.time()):
             liste[n] = Colorize(liste[n], RED, "FULL")
@@ -330,7 +330,7 @@ Colorie les cases en rouge ou bleu : pleinement si : 1 ou 'e'
             return
 
         # Si le bouton est en attente de fin de coloriage, et que le temps est
-        # dépasse la case est coloriee une derniere fois et le bouton et a
+        # depasse la case est coloriee une derniere fois et le bouton et a
         # nouveau desactive
         if flags[nb] == 'e' and time_flag[nb] < time.time():
             liste[n] = Colorize(liste[n], RED, "FULL")
@@ -428,10 +428,10 @@ De plus, c'est cette fonction qui mets les messages dans minecraft:
 
 def fctBridge(p1, p2):
     """Execute la fonction Bridge avec la parametre 1 et 2
-Emet un son à la fin de l'execution
+Emet un son a la fin de l'execution
 p1, p2: bool
 
-(p1 n'est pas encore attribué, la taille est automatique)
+(p1 n'est pas encore attribue, la taille est automatique)
 """
     xp, yp, zp = mc.player.getTilePos()
 
@@ -446,7 +446,7 @@ p1, p2: bool
 
 def fctHouse(p1, p2):
     """Execute la fonction Hause avec la parametre 1 et 2
-Emet un son à la fin de l'execution
+Emet un son a la fin de l'execution
 p1, p2: bool
 """
     xp, yp, zp = mc.player.getTilePos()
@@ -475,9 +475,9 @@ p1, p2: bool
 
 def fctMine(p1, p2):
     """Execute la fonction Mine avec la parametre 1 et 2
-Emet un son à la fin de l'execution
+Emet un son a la fin de l'execution
 p1, p2: bool
-(p2 n'est pas encore attribué parce que la mine n'est pas une construction
+(p2 n'est pas encore attribue parce que la mine n'est pas une construction
 mais un trou)
 """
     xp, yp, zp = mc.player.getTilePos()
@@ -493,7 +493,7 @@ mais un trou)
 
 def fctMidas(p1, p2):
     """Execute la fonction Midas avec la parametre 1 et 2
-Emet un son à la fin de l'execution
+Emet un son a la fin de l'execution
 p1, p2: bool
 """
     xp, yp, zp = mc.player.getTilePos()
@@ -515,7 +515,7 @@ p1, p2: bool
 # =========================================================================== #
 #                       2. Boucle d'exectution du code                        #
 # =========================================================================== #
-# on commence la première fois par initialiser la camera
+# on commence la premiere fois par initialiser la camera
 init_camera()
 
 # ensuite pour chaque image de la camera on execute les fonctions...
@@ -533,7 +533,7 @@ for f in camera.capture_continuous(rawCapture,
     detect_colour(frameClone, "BLUE")
 
     # ---------------------------------------
-    # Séparation et remise ensemble des images
+    # Separation et remise ensemble des images
     # ---------------------------------------
     # All frames are separated
     Left = frameClone[0:240, 0:120]
@@ -569,7 +569,7 @@ for f in camera.capture_continuous(rawCapture,
     All = np.hstack([Left2, Mid, Right2])  # Tout ensemble
 
     # ---------------------------------------------------------------------
-    # Lignes séparatrices entre les cases
+    # Lignes separatrices entre les cases
     # ---------------------------------------------------------------------
     All[0:240, 119:122] = YELLOW
     All[0:240, 199:202] = YELLOW

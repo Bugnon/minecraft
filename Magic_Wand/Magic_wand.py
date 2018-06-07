@@ -440,8 +440,8 @@ p1, p2: bool
     else:
         M = "COBBLESTONE"
 
-    Bridge.bridge(xp, yp, zp, "North", M)
-    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Bridge.mp3')
+    Bridge.bridge(xp, yp, zp, M)
+##    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Bridge.mp3')
 
 
 def fctHouse(p1, p2):
@@ -450,18 +450,13 @@ Emet un son a la fin de l'execution
 p1, p2: bool
 """
     xp, yp, zp = mc.player.getTilePos()
-    xp = xp + 4
 
     if p1 is True:
         # Attributions des valeurs
-        length = 12
-        width = 14
-        height = 12
+        size = 4
 
     if p1 is False:
-        length = 7
-        width = 5
-        height = 7
+        size = 1
 
     if p2 is True:
         M = "COBBLESTONE"
@@ -469,8 +464,8 @@ p1, p2: bool
     if p2 is False:
         M = "WOOD"
 
-    House.house(xp, yp, zp, length, width, height, M)
-    os('omxplayer -o local songs/House.mp3')
+    House.house(xp, yp, zp, M, size)
+##    os('omxplayer -o local songs/House.mp3')
 
 
 def fctMine(p1, p2):
@@ -485,10 +480,10 @@ mais un trou)
         size = 80
 
     if p1 is False:
-        size == 15
+        size = 15
 
     Mine.Mine(xp, yp, zp, "North", 15)
-    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Mine.mp3')
+##    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Mine.mp3')
 
 
 def fctMidas(p1, p2):
@@ -510,7 +505,7 @@ p1, p2: bool
         id_block = 41
 
     Midas.Midascube(xp, yp, zp, s, id_block)
-    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Midas.mp3')
+##    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Midas.mp3')
 
 # =========================================================================== #
 #                       2. Boucle d'exectution du code                        #

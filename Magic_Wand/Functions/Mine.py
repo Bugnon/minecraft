@@ -1,5 +1,8 @@
 import time
-
+from mcpi.minecraft import Minecraft
+mc = Minecraft.create()
+# Position du joueur
+xp, yp, zp = mc.player.getTilePos()
 
 def airx(x, y):
     """Transforme les blocs en air sur l'axe x
@@ -32,11 +35,11 @@ def isAirz(z, y):
 
 
 def Mine(x, y, z, direction, size):
-    """Cree une mine d'une taille donee
+    """Cree une mine d'une taille donee dans la direction Sud ou Nord
     """
     # Afin de ne pas depasser la bedrock
     # Couche de bedrock environ -50 sur Minecraft
-    if size >= yp+50:
+    if size >= y+50:
         mc.postToChat("it is too big")
     if direction == "North":
         for i in range(size):
@@ -68,26 +71,4 @@ def Mine(x, y, z, direction, size):
         time.sleep(1)
         for i in range(size//5):
             mc.setBlock(x, y-(1+i)*5, z+(1+i)*5, 50, 1)
-    if direction == "East":
-        for i in range(size):
-            airx(x+(i+1), y-(i+1))
-            mc.setBlock(x+(i+1), y-(i+2), z, 67, 1)
-        mc.setBlock(x, y-1, z, 67, 1)
-        time.sleep(1)
-        for i in range(size):
-            if isAirx(x-(1+i), y-(1+i)) is False:
-                Mine(x, y, z, direction, size)
-        time.sleep(1)
-        for i in range(size//5):
-            mc.setBlock(x+(1+i)*5, y-(1+i)*5, z, 50, 4)
-    if direction == "West":
-        for i in range(size):
-            airx(x-(i+1), y-(i+1))
-            mc.setBlock(x-(i+1), y-(i+2), z, 67, 0)
-            mc.setBlock(x, y-1, z, 67, 0)
-        for i in range(size):
-            if isAirx(x-(1+i), y-(1+i)) is False:
-                Mine(x, y, z, direction, size)
-        time.sleep(1)
-        for i in range(size//5):
-            mc.setBlock(x-(1+i)*5, y-(1+i)*5, z, 50, 3)
+    

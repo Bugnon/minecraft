@@ -88,9 +88,9 @@ def init_camera():
 # --------------------------------------------------------------------------- #
 taille_fenetre = 620  # largueur de la fenetre de visualisation de la camera
 
-# temps de marge avant l'execution d'un fonction; rester avec la couleur dans 
+# temps de marge avant l'execution d'un fonction; rester avec la couleur dans
 # la meme place pour qu'elle s'execute
-waiting_time = 2  
+waiting_time = 2
 
 # Les valeurs basses et hautes (lower/upper) du rouge et du bleu (R/B)
 # pour la detection
@@ -122,7 +122,8 @@ regions_red = [False, False, False, False, False]  # = [LU, LD, Mid, RU, RD]
 # - 0    le bouton n'est pas active
 # - ' '  le bouton est en attente d'execution
 # - 1    le bouton est enclenche
-# - 'e'  le bouton vient d'etre enclenche
+# - 'e'  le bouton vient d'etre enclenche / attente de fin de coloriage + temps
+#                                           d'attente avant réexecution
 flags = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0, 'button5': 0,
          'button6': 0, 'button7': 0, 'button8': 0, 'button9': 0, 'button10': 0}
 
@@ -133,19 +134,29 @@ time_flag = {'button1': 0, 'button2': 0, 'button3': 0, 'button4': 0,
              'button9': 0, 'button10': 0}
 """
 correspondance des boutons: (cf. jupyter notebook pour schéma)
+
                         ------------------------------
                         BLUE|Red| Case correspondante
                         ------------------------------
-                        1.  |6. | Haut gauche (LU)   |
-                        2.  |7. | Bas Gauche (LD)    |
-                        3.  |8. | millieu (Mid)      |
-                        4.  |9. | Haut droit (RU)    |
-                        5.  |10.| Bas droit (RD)     |
+                        |1. |6. | Haut gauche (LU)   |
+                        |2. |7. | Bas Gauche (LD)    |
+                        |3. |8. | millieu (Mid)      |
+                        |4. |9. | Haut droit (RU)    |
+                        |5. |10.| Bas droit (RD)     |
 
 """
+
+# Initialisation valeurs des paramètres et fonctions pour minecraft
+# --------------------------------------------------------------------------- #
+param1 = False  # False = petit, True = grand
+param2 = False  # False = materiaux 1, True = materiaux 2
+mc_funct = 0    # 0= None, 1= Bridge, 2= House, 3= Midas, 4= Mine
+
+start = 0      # 0 = neutral, 1 = execution, -1= stop Magic_wand.py
 # --------------------------------------------------------------------------- #
 # 2.5 Definition des fonctions travaillant sur image
 # --------------------------------------------------------------------------- #
+
 
 def detect_colour(img, colour):
     """ Detection des couleurs qui sont entre lower et upper dans chaque case
@@ -166,11 +177,11 @@ couleur: "RED"/"BLUE"
 
     lower = np.array(lower, dtype="uint8")
     upper = np.array(upper, dtype="uint8")
-    
-    #cree un mask qui enleve tout ce qui n'est pas entre lower et upper
+
+    # cree un mask qui enleve tout ce qui n'est pas entre lower et upper
     mask = cv2.inRange(img, lower, upper)
 
-    #Enlever les '#' pour avoir un apercu des operations
+    # Enlever les '#' pour avoir un apercu des operations
 #    output = cv2.bitwise_and(img, img, mask=mask)
 #    cv2.imshow("Mask", mask)
 #    cv2.imshow("Detect color", np.hstack([img, output]))
@@ -182,17 +193,17 @@ couleur: "RED"/"BLUE"
     RUm = mask[0:120, 240:]
     RDm = mask[120:240, 240:]
     regions = [LUm, LDm, Midm, RUm, RDm]
-    
+
     # enregistre (True/False) dans les listes predifinies en 2.4 afin qu'on
-    #puisse utiliser pour executer les fonction dans 'button_fct_pressed(n)'
+    # puisse utiliser pour executer les fonction dans 'button_fct_pressed(n)'
     if colour == "RED":
         for i in range(5):
             regions_red[i] = np.average(regions[i]) > redmin
-        #print(regions_red)  # si on veut voir la liste 
+        # print(regions_red)  # si on veut voir la liste
     if colour == "BLUE":
         for i in range(5):
             regions_blue[i] = np.average(regions[i]) > bluemin
-        #print(regions_blue)  # si on veut voir la liste 
+        # print(regions_blue)  # si on veut voir la liste
 
 
 def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
@@ -239,65 +250,128 @@ Full: int ou "FULL"
 # --------------------------------------------------------------------------- #
 # 2.6 Definition des fonctions "d'exectution"
 # --------------------------------------------------------------------------- #
-def button_fct_pressed(n):
-    """Test if nb (button + number of button) is pressed, released,
-    or beeing pressed.
-transform button flags :
 
-n: int (0..9)
+
+def button_fct_pressed(n):
+    """ Test si le bouton doit être
+ - 0    le bouton n'est pas active
+ - ' '  le bouton est en attente d'execution
+ - 1    le bouton est enclenche
+ - 'e'  le bouton vient d'etre enclenche / attente de fin de coloriage + temps
+                                           d'attente avant réexecution
+
+Colorie les cases en rouge ou bleu : pleinement si : 1 ou 'e'
+                                     encadré si  ' '
+ cf. jupyter notebook pour des schémas explicatifs
+
+ n: int entre 0 et 9
 """
+    # Enregistrement en string le bouton sur lequel on "travail" pour pouvoir
+    # par la suite enregistrer des valeurs dans les listes.
     nb = 'button' + str(n+1)
 
+    # On commence par travailler par les boutons "bleus" (n < 5)
     if n < 5:
+
+        # Si le boutons est enclenché ou entrain d'enclenche et que le temps
+        # d'attente de fin d'execution n'est pas fini, la case se fait colorier
+        # en bleu et si le bouton valait 1 il est transformé en 'e'
         if ((flags[nb] == 1 or flags[nb] == 'e')
-        and time_flag[nb] > time.time()):
+           and time_flag[nb] > time.time()):
             liste[n] = Colorize(liste[n], BLUE, "FULL")
             flags[nb] = 'e'
             return
+
+        # Si le bouton est en attente de fin de coloriage, et que le temps est
+        # dépasse la case est coloriee une derniere fois et le bouton et a
+        # nouveau desactive
         if flags[nb] == 'e' and time_flag[nb] < time.time():
             liste[n] = Colorize(liste[n], BLUE, "FULL")
             flags[nb] = 0
+
+        # Si le bouton n'est pas active et que la baguette est detectee,
+        # un cadre se met aux bords de la case et le bouton passe en attente
+        # d'execution. Le but est d'avoir un temps durant lequel la baguette
+        # doit etre detectee afin que l'on aie le temps de bien choisir ce
+        # qu'on veut faire
         if regions_blue[n] == True:
             liste[n] = Colorize(liste[n], BLUE)
             if flags[nb] == 0 and time_flag[nb] < time.time():
                 flags[nb] = ' '
                 time_flag[nb] = waiting_time + time.time()
                 return
+
+            # Si la baguette est detectee depuis assez longtemps, le bouton
+            # passe en mode actif est la case est coloriee
             if flags[nb] == ' ' and time_flag[nb] < time.time():
                 flags[nb] = 1
                 time_flag[nb] = waiting_time + time.time()
                 liste[n] = Colorize(liste[n], BLUE, "FULL")
                 return
+
+        # Si la baguette n'est pas detectee, le bouton passe en mode inactif
         if regions_blue[n] == False:
             flags[nb] = 0
             return
+
+    # Maintenant si le bouton est rouge
     if n > 4:
+
+        # Pour pouvoir travailler dans la liste rouge
         n = n - 5
+
+        # Si le boutons est enclenché ou entrain d'enclenche et que le temps
+        # d'attente de fin d'execution n'est pas fini, la case se fait colorier
+        # en rouge et si le bouton valait 1 il est transformé en 'e'
         if ((flags[nb] == 1 or flags[nb] == 'e')
-        and time_flag[nb] > time.time()):
+           and time_flag[nb] > time.time()):
             liste[n] = Colorize(liste[n], RED, "FULL")
             flags[nb] = 'e'
             return
+
+        # Si le bouton est en attente de fin de coloriage, et que le temps est
+        # dépasse la case est coloriee une derniere fois et le bouton et a
+        # nouveau desactive
         if flags[nb] == 'e' and time_flag[nb] < time.time():
             liste[n] = Colorize(liste[n], RED, "FULL")
             flags[nb] = 0
+
+        # Si le bouton n'est pas active et que la baguette est detectee,
+        # un cadre se met aux bords de la case et le bouton passe en attente
+        # d'execution. Le but est d'avoir un temps durant lequel la baguette
+        # doit etre detectee afin que l'on aie le temps de bien choisir ce
+        # qu'on veut faire
         if regions_red[n] == True:
             liste[n] = Colorize(liste[n], RED)
             if flags[nb] == 0 and time_flag[nb] < time.time():
                 flags[nb] = ' '
                 time_flag[nb] = waiting_time + time.time()
                 return
+
+            # Si la baguette est detectee depuis assez longtemps, le bouton
+            # passe en mode actif est la case est coloriee
             if flags[nb] == ' ' and time_flag[nb] < time.time():
                 flags[nb] = 1
                 time_flag[nb] = waiting_time + time.time()
                 liste[n] = Colorize(liste[n], RED, "FULL")
                 return
+
+        # Si la baguette n'est pas detectee, le bouton passe en mode inactif
         if regions_red[n] == False:
             flags[nb] = 0
             return
 
 
 def exefct():
+    """Pour chaque bouton, effectue des changements s'il est actif (=1)
+en changement les parametres 1 et 2 (materiaux et taille)
+Peut aussi changer start (pour arreter le programme)
+De plus il execute les fonctions qui execute les fonctions (fctMyfonction)
+De plus, c'est cette fonction qui mets les messages dans minecraft:
+    - You need to choose a function!
+    - Working, wait...
+    - Work done!
+"""
     global mc_funct, param1, param2, start
 
     if flags['button1'] == True:  # 1 = True = beeing pressed
@@ -346,11 +420,19 @@ def exefct():
     if flags['button10'] == True:  # 1 = True = beeing pressed
         mc_funct = 4
         mc.postToChat("Function: Mine")
+
 # --------------------------------------------------------------------------- #
 # 2.7 Definition des fonctions d'exectution des constructions
 # --------------------------------------------------------------------------- #
 
+
 def fctBridge(p1, p2):
+    """Execute la fonction Bridge avec la parametre 1 et 2
+Emet un son à la fin de l'execution
+p1, p2: bool
+
+(p1 n'est pas encore attribué, la taille est automatique)
+"""
     xp, yp, zp = mc.player.getTilePos()
 
     if p2 is True:
@@ -363,10 +445,15 @@ def fctBridge(p1, p2):
 
 
 def fctHouse(p1, p2):
+    """Execute la fonction Hause avec la parametre 1 et 2
+Emet un son à la fin de l'execution
+p1, p2: bool
+"""
     xp, yp, zp = mc.player.getTilePos()
     xp = xp + 4
 
     if p1 is True:
+        # Attributions des valeurs
         length = 12
         width = 14
         height = 12
@@ -387,6 +474,12 @@ def fctHouse(p1, p2):
 
 
 def fctMine(p1, p2):
+    """Execute la fonction Mine avec la parametre 1 et 2
+Emet un son à la fin de l'execution
+p1, p2: bool
+(p2 n'est pas encore attribué parce que la mine n'est pas une construction
+mais un trou)
+"""
     xp, yp, zp = mc.player.getTilePos()
     if p1 is True:
         size = 80
@@ -399,6 +492,10 @@ def fctMine(p1, p2):
 
 
 def fctMidas(p1, p2):
+    """Execute la fonction Midas avec la parametre 1 et 2
+Emet un son à la fin de l'execution
+p1, p2: bool
+"""
     xp, yp, zp = mc.player.getTilePos()
     if p1 is True:
         s = 15
@@ -407,42 +504,36 @@ def fctMidas(p1, p2):
         s = 5
 
     if p2 is True:
-        idb = 57
+        id_block = 57
 
     if p2 is False:
-        idb = 41
+        id_block = 41
 
-    Midas.Midascube(xp, yp, zp, s, idb)
+    Midas.Midascube(xp, yp, zp, s, id_block)
     os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Midas.mp3')
 
-# ---------------------------------------
-# initialisation param minecraft
-# ---------------------------------------
-param1 = False  # False = petit, True = grand
-param2 = False  # False = materiaux 1, True = materiaux 2
-mc_funct = 0    # 0= None, 1= Bridge, 2= House, 3= Midas, 4= Mine
-
-start = 0      # 0 = neutral, 1 = execution, -1= stop Magic_wand.py
-# ---------------------------------------
-# loop
-# ---------------------------------------
+# =========================================================================== #
+#                       2. Boucle d'exectution du code                        #
+# =========================================================================== #
+# on commence la première fois par initialiser la camera
 init_camera()
 
-# capture frames from the camera
+# ensuite pour chaque image de la camera on execute les fonctions...
 for f in camera.capture_continuous(rawCapture,
                                    format="bgr", use_video_port=True):
     # grab the raw NumPy array representing the image
     frame = f.array
+    # on retourne l'image pour rendre l'utilisation plus intuitive
     frameClone = cv2.flip(frame.copy(), 1)
 
-    # ---------------------------------------
-    # detect color and position:
-    # ---------------------------------------
+    # ---------------------------------------------------------------------
+    # Detection des couleurs et de la case de detection:
+    # ---------------------------------------------------------------------
     detect_colour(frameClone, "RED")
     detect_colour(frameClone, "BLUE")
 
     # ---------------------------------------
-    # Stack images
+    # Séparation et remise ensemble des images
     # ---------------------------------------
     # All frames are separated
     Left = frameClone[0:240, 0:120]
@@ -454,39 +545,49 @@ for f in camera.capture_continuous(rawCapture,
     RU = Right[0:120, 0:120]
     RD = Right[120:240, 0:120]
 
+    # liste pour quand on veut colorier
     liste = [LU, LD, Mid, RU, RD]
 
+    # Execution de la fonction qui utilise chaque case et couleur comme des
+    # boutons
     for i in range(10):
         button_fct_pressed(i)
 
+    # Execution des fonctions (execute si le bouton vaut 1)
     exefct()
-    print(flags['button1'], flags['button2'], flags['button3'],
-          flags['button4'], flags['button5'], flags['button6'],
-          flags['button7'], flags['button8'], flags['button9'],
-          flags['button10'])
 
-    Right2 = np.vstack([RU, RD])
-    Left2 = np.vstack([LU, LD])
-    All = np.hstack([Left2, Mid, Right2])
+    # Si on veut avoir un apercu de l'etat des boutons
+#     print(flags['button1'], flags['button2'], flags['button3'],
+#           flags['button4'], flags['button5'], flags['button6'],
+#           flags['button7'], flags['button8'], flags['button9'],
+#           flags['button10'])
 
-    # ---------------------------------------
-    # lines
-    # ---------------------------------------
+    # Rassemblage des images
+    Right2 = np.vstack([RU, RD])  # A droite
+    Left2 = np.vstack([LU, LD])  # A gauche
+
+    All = np.hstack([Left2, Mid, Right2])  # Tout ensemble
+
+    # ---------------------------------------------------------------------
+    # Lignes séparatrices entre les cases
+    # ---------------------------------------------------------------------
     All[0:240, 119:122] = YELLOW
     All[0:240, 199:202] = YELLOW
     All[119:122, 0:119] = YELLOW
     All[119:122, 202:320] = YELLOW
-    # ---------------------------------------
-    # apercu
-    # ---------------------------------------
+    # ---------------------------------------------------------------------
+    # Apercu
+    # ---------------------------------------------------------------------
+    # Agrandissment de la fenetre
     All = resize(All, taille_fenetre)
+
     cv2.imshow("Detection", All)
     rawCapture.truncate(0)
 
     # ---------------------------------------
-    # if you want to break the program
+    # Pour arreter le programme
     # ---------------------------------------
-    # if the 'q' key is pressed, stop the loop
+    # Si la touche q ou si start = -1 le programme s'arrete
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 

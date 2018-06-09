@@ -1,16 +1,53 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                             #
+#                         MAGIC WAND, MINECRABRACADABRA                       #
+#                                                                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#      Auteurs:   Albert et Ludovic
+#  Affiliation:   Gymnase du Bugnon
+#        Annee:   2017-2018
+#       Classe:   OC-Informatique
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+# =========================================================================== #
+#                         1. Description du Fichier                           #
+# =========================================================================== #
+"""
+Creation d'une maison autour du joueur.
+La maison peut etre en pierre ou en bois et de taille variable.
+La porte est orientee au nord du joueur.
+Un espace vide est cree 2 blocs autour de la maison.
+un bloc de fondation se trouve sous la maison.
+"""
+# =========================================================================== #
+#                         2. Code                                             #
+# =========================================================================== #
+
+from mcpi import minecraft
+mc = minecraft.Minecraft.create()
+
+# quelques id de blocs
 glass = 102
 door_low = 64, 1
 door_high = 64, 11
-# z- north z+ south x+ east x- west
 
-from mcpi.minecraft import Minecraft
-mc = Minecraft.create()
+# =========================================================================== #
+#                         2.1 Espace vide                                     #
+# =========================================================================== #
 
 
 def clear_space(x, y, z, range):
     """Transforme les blocs autour du joueur en air"""
     mc.setBlocks(
         x-range, y+200, z-range, x+range, y, z+range, 0)
+
+# =========================================================================== #
+#                         2.2 Construction de la maison                       #
+# =========================================================================== #
 
 
 def house(x, y, z, material, n):

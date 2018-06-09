@@ -1,7 +1,38 @@
-# la taille doit etre impaire
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                             #
+#                         MAGIC WAND, MINECRABRACADABRA                       #
+#                                                                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#      Auteurs:   Albert et Ludovic
+#  Affiliation:   Gymnase du Bugnon
+#        Annee:   2017-2018
+#       Classe:   OC-Informatique
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+# =========================================================================== #
+#                         1. Description du Fichier                           #
+# =========================================================================== #
+"""
+Transformation de blocs non vides autour du joueur a l'instar du roi Midas.
+Les blocs transformes peuvent etre de n'importe quel materiau.
+la taille du bloc autour du joueur doit etre impaire.
+La transformation se fait colonne apres colonne donc la fonction prend
+relativement beaucoup de temps.
+"""
+# =========================================================================== #
+#                         2. Code                                             #
+# =========================================================================== #
 
 from mcpi.minecraft import Minecraft
 mc = Minecraft.create()
+
+# =========================================================================== #
+#                         2.1 Verificaton des blocs                           #
+# =========================================================================== #
 
 
 def isAir(x, y, z):
@@ -11,6 +42,10 @@ def isAir(x, y, z):
         return True
     else:
         return False
+
+# =========================================================================== #
+#                         2.2 Transformation des blocs                        #
+# =========================================================================== #
 
 
 def Midasline(x, y, z, size, blockid):

@@ -1,3 +1,40 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                             #
+#                         MAGIC WAND, MINECRABRACADABRA                       #
+#                                                                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#      Auteurs:   Albert et Ludovic
+#  Affiliation:   Gymnase du Bugnon
+#        Annee:   2017-2018
+#       Classe:   OC-Informatique
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+# =========================================================================== #
+#                         1. Description du Fichier                           #
+# =========================================================================== #
+"""
+Creation d'un pont dans la direction nord depuis la position du joueur.
+Le pont peut etre en bois ou pierre.
+La longueur du pont est definie par le nombre de blocs vides, minimum 5,
+au nord du joueur.
+La fonction bridge appelle deux fonctions pour que le code soit plus lisible.
+"""
+# =========================================================================== #
+#                         2. Code                                             #
+# =========================================================================== #
+
+from mcpi import minecraft
+mc = minecraft.Minecraft.create()
+
+# =========================================================================== #
+#                         2.1 Longueur du pont                                #
+# =========================================================================== #
+
+
 def isvoid(x, y, z):
     """Verifie si le bloc est de l'air ou de l'eau"""
     b = mc.getBlock(x, y, z)
@@ -25,6 +62,10 @@ def lengthbridge(x, y, z):
         # si le joueur ne se trouve pas a coté du vide
         # la fonction est appelée un bloc plus au nord
         return lengthbridge(x, y, z-1)
+
+# =========================================================================== #
+#                         2.2 Construction du pont                            #
+# =========================================================================== #
 
 
 def first_stage(x, y, z, l, stairs, block):
@@ -112,10 +153,5 @@ def bridge(x, y, z, blocktype):
         # rembarde de blocs
         mc.setBlocks(xs-1, ys+3, zs, xs-1, ys+3, zs-l+1, block)
         mc.setBlocks(xs+2, ys+3, zs, xs+2, ys+3, zs-l+1, block)
-
-
-from mcpi import minecraft
-mc = minecraft.Minecraft.create()
-x,y,z = mc.player.getTilePos()
-
-bridge(x,y,z,"WOOD")
+    else:
+        mc.postToChat("It is too small")

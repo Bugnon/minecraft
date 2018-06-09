@@ -155,9 +155,6 @@ def buildPositions(n, bordure, largeurTotale):
 # ---------------------------------------
 # Init des configurations
 # ---------------------------------------
-antirebond_time = 0.10
-# Pin sur le GPIO
-button = 14
 
 # Sommets du carré que le programme doit observé, utiliser le jupyter initialization_helper pour créer les point plus facilement.
 upper_left = (230, 135)
@@ -196,6 +193,10 @@ resetPushTime = 5
 flag = 0
 # Time flag : Sauvegarde le temps de pression
 time_flag = 0
+
+antirebond_time = 0.10
+# Pin sur le GPIO
+button = 14
 
 # Reset detection
 alreadyReset = False
@@ -243,27 +244,29 @@ def button_fct_pressed():
     """Test si le bouton est appuye, relache ou en train d'etre appuye.
 modifie le flag du bouton :
         -0  = relache
-        -1  = en train d'etre appuye
-        -' ' = appuye
+        -1  = appuye
+        -' ' = juste relâché
 """
     global flag
     global time_flag
     global button
     global antirebond_time
 
-    if (not gpio.input(button) and
-            flag == 0 and
-            (time_flag == 0 or time_flag + antirebond_time < time.time())):
-        flag = 1
-        time_flag = time.time()
-    elif (flag == 1 or flag == ' ') and not gpio.input(button):
-        flag = ' '
-
-    elif ((flag == ' ' or flag == 1) and
-            gpio.input(button) and
-            (time_flag == 0 or time_flag + antirebond_time < time.time())):
-        flag = 0
-        time_flag = time.time()
+	pressed = not gpio.input(button)
+	last_pressed = flag == 1
+	
+	if pressed:
+		flag = 1
+		if time_flag == 0:
+			time_flag = time.time()
+	else:
+		if last_pressed:
+			flag = ' '
+			time_flag = time.time() - time_flag
+		else :
+			flag = 0
+			time_flag = 0
+	print(pressed, last_pressed, flag, time_flag)
 
 
 def onButtonPressed():

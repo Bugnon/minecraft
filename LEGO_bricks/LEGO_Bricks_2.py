@@ -157,16 +157,16 @@ def buildPositions(n, bordure, largeurTotale):
 # ---------------------------------------
 
 # Sommets du carré que le programme doit observé, utiliser le jupyter initialization_helper pour créer les point plus facilement.
-upper_left = (230, 135)
-upper_right = (445, 110)
-down_left = (251, 350)
-down_right = (468, 335)
+upper_left = (230, 155)
+upper_right = (450, 145)
+down_left = (236, 365)
+down_right = (452, 355)
 
 final_size = 150
 
 # Point de l'image qui restera inchange entre chaque manipulation de
 # l'utilisateur. Est utilise pour limiter les problemes lies a la luminosite
-pointToWatch = (3, 30)
+pointToWatch = (5, 30)
 
 # Liste de tuples, sauvegardant les position a verifier sur l'image et
 # leur position correspondante dans mineraft.
@@ -222,12 +222,12 @@ gpio.setup(button, gpio.IN, pull_up_down=gpio.PUD_UP)
 # Initialisation de l'environnement dans minecraft
 # ---------------------------------------
 # Teleporation du joueur et generation de l'emplacement des constructions
-p.setPos(9, 10, 0)
-mc.setBlocks(-2, -1, -2, 10, 100, 10, 155)
-mc.setBlocks(-1, 0, -1, 9, 100, 9, 0)
-mc.setBlocks(0, -1, 0, 8, -1, 8, 2)
+p.setPos(5, 20, 5)
+mc.setBlocks(-2, -1, -2, 9, 100, 9, 155)
+mc.setBlocks(-1, 0, -1, 8, 100, 8, 0)
+mc.setBlocks(0, -1, 0, 7, -1, 7, 2)
 # int : utilise pour definir la hauteur a laquelle les blocs seront places
-height = 1
+height = 0
 
 # ---------------------------------------
 # Initialisation de la camera
@@ -237,7 +237,7 @@ camera = PiCamera()
 camera.resolution = (640, 480)
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
-debug = -1
+debug = -5
 
 
 def button_fct_pressed():
@@ -252,21 +252,19 @@ modifie le flag du bouton :
     global button
     global antirebond_time
 
-	pressed = not gpio.input(button)
-	last_pressed = flag == 1
-	
-	if pressed:
-		flag = 1
-		if time_flag == 0:
-			time_flag = time.time()
-	else:
-		if last_pressed:
-			flag = ' '
-			time_flag = time.time() - time_flag
-		else :
-			flag = 0
-			time_flag = 0
-	print(pressed, last_pressed, flag, time_flag)
+    pressed = not gpio.input(button)
+    last_pressed = flag == 1
+    
+    if pressed:
+        if time_flag == 0:
+            flag = 1
+            time_flag = time.time()
+    elif time.time() - time_flag > antirebond_time:
+        if last_pressed:
+            flag = ' '
+        else :
+            flag = 0
+            time_flag = 0
 
 
 def onButtonPressed():
@@ -285,9 +283,11 @@ def onButtonPressed():
     (b1, g1, r1) = last[pointToWatch[0], pointToWatch[1]]
     (b2, g2, r2) = new[pointToWatch[0], pointToWatch[1]]
 
-    r = r1-r2
-    g = g1-g2
-    b = b1-b2
+    r = math.fabs(int(r1)-int(r2))
+    g = math.fabs(int(g1)-int(g2))
+    b = math.fabs(int(b1)-int(b2))
+
+    print(r, g, b)
 
     (B1, G1, R1) = cv2.split(last)
     (B2, G2, R2) = cv2.split(new)
@@ -311,11 +311,11 @@ def onButtonPressed():
                 checkDif(G1, G2, x, y, g) or
                 checkDif(R1, R2, x, y, r)):
             if i == 0:
-                build_garden(4, 1, 4)
+                build_garden(4, 0, 4)
             elif i == 1:
-                build_fountain(4, 1, 4)
+                build_fountain(6, 0, 6)
             elif i == 2:
-                build_house(4, 1, 4)
+                build_house(1, -1, 1)
                 
         i+=1 
 
@@ -350,11 +350,13 @@ def reset():
     global mc
     global height
     print("Reinitialisation")
+    p = mc.player
+    p.setPos(5, 20, 5)
     mc.setBlocks(-2, -1, -2, 9, 100, 9, 155)
     mc.setBlocks(-1, 0, -1, 8, 100, 8, 0)
     mc.setBlocks(0, -1, 0, 7, -1, 7, 2)
     mc.postToChat("Reinitialisation")
-    height = 1
+    height = 0
 
 
 def showInit(positions, frame, image):
@@ -414,53 +416,38 @@ for f in camera.capture_continuous(rawCapture,
     # ----------------------------------------
     # Boutons
     # ----------------------------------------
-    pushed = False
-    if flag:
-        pushed = True
     # Mise a jour de l'etat du bouton
     button_fct_pressed()
 
     # Tests pour savoir si l'on doit exectuer la fonction onButtonPressed(),
     # la fonction reset() ou ne rien faire
-    if not flag:
-        if pushed and not alreadyReset:
+    if flag == ' ':
+        if not alreadyReset:
             last_pic = new_pic
             new_pic = frame
-            cv2.imwrite("images/new.jpg", frame)
             onButtonPressed()
         alreadyReset = False
-
-    t = time.time()
-    if (flag and t - time_flag >= resetPushTime and not alreadyReset):
-        reset()
-        alreadyReset = True
+    elif flag == 1 :
+        if(time_flag != 0 and time.time() - time_flag > resetPushTime and not alreadyReset):
+            reset()
+            alreadyReset = True
 
     # Affiche l'image initialisee, permet de verifier que les valeurs entree
     # lors de la configuration sont justes.
     if new_pic is not None:
         if debug < 100:
             cv2.imshow("Image", showInit(positions, f.array, new_pic))
-            if debug == 50:
-                cv2.imwrite("images/before.jpg", f.array)
-                cv2.imwrite("images/after.jpg", new_pic)
-                p = new_pic.copy()
-                for (mcx, mcy, x, y) in positions:
-                    p[x-1:x+1, y-1:y+1] = (0, 0, 0)
-                p[pointToWatch[0]-2:pointToWatch[0]+2, pointToWatch[1]-2:pointToWatch[1]+2] = (0, 255, 255)
-                #Les positions des constructions préfaites
-                p[garden[0]-2:garden[0]+2, garden[1]-2:garden[1]+2] = (255, 0, 0)
-                p[fountain[0]-2:fountain[0]+2, fountain[1]-2:fountain[1]+2] = (0, 255, 0)
-                p[house[0]-2:house[0]+2, house[1]-2:house[1]+2] = (0, 0, 255)
-                
-                f = f.array.copy()
-                cv2.line(f, upper_left, upper_right, (0, 0, 255), 5)
-                cv2.line(f, upper_right, down_right, (0, 0, 255), 5)
-                cv2.line(f, down_right, down_left, (0, 0, 255), 5)
-                cv2.line(f, down_left, upper_left, (0, 0, 255), 5)
-                cv2.imwrite("images/cadre.jpg", f)
-                cv2.imwrite("images/avec_points.jpg", p)
         else:
-            cv2.imshow("Image", new_pic)
+            p = new_pic.copy()
+            for (mcx, mcy, x, y) in positions:
+                p[x-1:x+1, y-1:y+1] = (0, 0, 0)
+            p[pointToWatch[0]-2:pointToWatch[0]+2, pointToWatch[1]-2:pointToWatch[1]+2] = (0, 255, 255)
+            #Les positions des constructions préfaites
+            p[garden[0]-2:garden[0]+2, garden[1]-2:garden[1]+2] = (255, 0, 0)
+            p[fountain[0]-2:fountain[0]+2, fountain[1]-2:fountain[1]+2] = (0, 255, 0)
+            p[house[0]-2:house[0]+2, house[1]-2:house[1]+2] = (0, 0, 255)
+        
+            cv2.imshow("Image", p)
 
     rawCapture.truncate(0)
 

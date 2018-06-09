@@ -3,6 +3,9 @@ door_low = 64, 1
 door_high = 64, 11
 # z- north z+ south x+ east x- west
 
+from mcpi.minecraft import Minecraft
+mc = Minecraft.create()
+
 
 def clear_space(x, y, z, range):
     """Transforme les blocs autour du joueur en air"""
@@ -16,7 +19,7 @@ def house(x, y, z, material, n):
         M1 = 5
         M2 = 17
         stairs = 53
-    if material == "STONE":
+    if material == "COBBLESTONE":
         M1 = 98
         M2 = 4
         stairs = 109

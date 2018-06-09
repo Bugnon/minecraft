@@ -1,5 +1,8 @@
 # la taille doit etre impaire
 
+from mcpi.minecraft import Minecraft
+mc = Minecraft.create()
+
 
 def isAir(x, y, z):
     """Verifie si le bloc est de l'air

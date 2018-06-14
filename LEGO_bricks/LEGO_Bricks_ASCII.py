@@ -23,7 +23,7 @@ print("Initialising")
 # ===========================================
 # Initialisation des variables configurables
 # Utilisez le jupyter initialization_helper
-# pour trouver vous faciliter la configuration.
+# pour vous faciliter la configuration.
 # ===========================================
 
 # Sommets du carre que le programme doit observer.

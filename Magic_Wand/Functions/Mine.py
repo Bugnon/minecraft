@@ -93,3 +93,5 @@ def Mine(x, y, z, direction, size):
         time.sleep(1)
         for i in range(size//5):
             mc.setBlock(x, y-(1+i)*5, z+(1+i)*5, 50, 1)
+
+Mine(xp,yp,zp,"North",30)

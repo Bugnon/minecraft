@@ -111,3 +111,7 @@ def house(x, y, z, material, n):
         x-n+1, y+n+4, z-n, x+n-1, y+n+4, z-n, stairs, 2)
     mc.setBlocks(
         x-n+1, y+n+4, z+n, x+n-1, y+n+4, z+n, stairs, 3)
+
+
+xp,yp,zp = mc.player.getTilePos()
+house(xp,yp,zp,"COBBLESTONE", 3)

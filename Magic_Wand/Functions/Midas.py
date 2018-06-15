@@ -75,3 +75,7 @@ def Midascube(x, y, z, size, blockid):
     # transforme face apres face le cube
     for i in range(size):
         Midassquare(x, y, z-n+i, size, blockid)
+
+
+xp,yp,zp = mc.player.getTilePos()
+Midascube(xp,yp,zp,7, 41)

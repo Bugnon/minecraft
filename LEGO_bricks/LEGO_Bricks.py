@@ -171,10 +171,9 @@ def build_garden(x, y, z):
 
 def build_fountain(x, y, z):
     """Crée une foutaine aux coordonnees x, y, z."""
-    mc.setBlocks(x-5, y, z-5, x+1, y+1, z+1, 1)
-    mc.setBlocks(x-4, y+1, z-4, x, y+1, z, 0)
-    mc.setBlocks(x-4, y+1, z-4, x, y+1, z, 8)
-    mc.setBlocks(x-2, y+1, z-2, x-2, y+3, z-2, 1)
+    mc.setBlocks(x-3, y, z-3, x+1, y+1, z+1, 1)
+    mc.setBlocks(x-2, y+1, z-2, x, y+1, z, 8)
+    mc.setBlocks(x-1, y+1, z-1, x-1, y+3, z-1, 1)
 
 # =======================================
 # Initialisation

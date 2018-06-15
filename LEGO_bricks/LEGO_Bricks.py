@@ -3,7 +3,7 @@
 # Affiliation: Gymnase du Bugnon
 # OC informatique
 
-# Importation du module pour acceder au GPIO
+# Importation du module pour accéder au GPIO
 import RPi.GPIO as gpio
 # Importation du module cv2
 import cv2
@@ -13,7 +13,7 @@ import time
 import math
 # Importation du module pour interagir avec Minecraft
 from mcpi.minecraft import Minecraft
-# Importation du module de la camera
+# Importation du module de la caméra
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
@@ -26,34 +26,34 @@ print("Initialising")
 # pour vous faciliter la configuration.
 # ===========================================
 
-# Sommets du carre que le programme doit observer.
-upper_left = (230, 155)
-upper_right = (450, 145)
-down_left = (236, 365)
-down_right = (452, 355)
+# Sommets du carré que le programme doit observer.
+upper_left = (227, 146)
+upper_right = (450, 142)
+down_left = (230, 362)
+down_right = (447, 362)
 
 # Largeur de l'image sur laquelle le programme travaille.
 final_size = 150
-# Nombre de points a verifier
+# Nombre de points à vérifier
 nombre_de_points = 8
 # Bordure en pixel
 bordure = 25
 
-# Positons (x; y) des points qui doivent etre verifies
-# pour creer les structures predefinies.
+# Positons (x; y) des points qui doivent être vérifiés
+# pour créer les structures prédéfinies.
 garden = (67, 145)
 fountain = (81, 145)
 house = (97, 145)
 
-# Point de l'image qui restera inchange entre chaque manipulations.
-# Utilise pour limiter les problemes lies a la luminosite.
+# Point de l'image qui restera inchangé entre chaque manipulations.
+# Utilisé pour limiter les problèmes liés à la luminosité.
 pointToWatch = (5, 30)
 
 # Pin du bouton sur le GPIO
 button = 14
 
-# Temps en secondes durant lequel le bouton doit rester presse
-# avant que le systeme ne se reinitialise.
+# Temps en secondes durant lequel le bouton doit rester pressé
+# avant que le système ne se réinitialise.
 resetPushTime = 5
 
 
@@ -65,7 +65,7 @@ def placeBlock(x, z):
     mc.setBlock(x, height, z, 35, 15)
 
 # ===========================================
-# Methodes de generation des constructions
+# Méthodes de génération des constructions
 # ===========================================
 
 
@@ -136,7 +136,7 @@ def build_house(px, py, pz,
 
 
 def build_garden(x, y, z):
-    """Cree une structures jardin aux coordonnees x, y, z"""
+    """Crée une structures jardin aux coordonnees x, y, z"""
     for l in [4, 2]:
         # Create a part of the garden, the center square and the outer walls.
         # The outer walls' dimention is l x e.
@@ -170,7 +170,7 @@ def build_garden(x, y, z):
 
 
 def build_fountain(x, y, z):
-    """Cree une foutaine aux coordonnees x, y, z."""
+    """Crée une foutaine aux coordonnees x, y, z."""
     mc.setBlocks(x-5, y, z-5, x+1, y+1, z+1, 1)
     mc.setBlocks(x-4, y+1, z-4, x, y+1, z, 0)
     mc.setBlocks(x-4, y+1, z-4, x, y+1, z, 8)
@@ -198,16 +198,16 @@ def buildPositions(n, bordure, largeurTotale):
     return poses
 
 # Flag
-# 0  = Relâche
-# 1  = Appuyee
-# ' ' = Juste relâche
+# 0  = Relâché
+# 1  = Appuyée
+# ' ' = Juste relâché
 flag = 0
 # Time flag : Sauvegarde le temps de pression
 time_flag = 0
-# Delai durant lequel un changement d'etat du bouton est ignore,
-# il peut etre cause par une simple inconstance.
+# Délai durant lequel un changement d'état du bouton est ignoré,
+# il peut être causé par une simple inconstance.
 antirebond_time = 0.10
-# Booleen sauvegardant une reinitialisation pour ne pas l'effectuer deux fois
+# Booléen sauvegardant une réinitialisation pour ne pas l'effectuer deux fois
 alreadyReset = False
 
 # Images
@@ -215,7 +215,7 @@ first_pic = None
 last_pic = None
 new_pic = None
 
-# Liste de tuples, sauvegardant les positions a verifie sur l'image
+# Liste de tuples, sauvegardant les positions a vérifié sur l'image
 # et leur position correspondante dans Minecraft.
 # Tuple : (mcx, mcy, x, y)
 #    x : pixel x
@@ -224,7 +224,7 @@ new_pic = None
 #    mcy : Minecraft y
 positions = buildPositions(nombre_de_points, bordure, final_size)
 
-# Creation de la matrice de perspective M.
+# Création de la matrice de perspective M.
 inCorners = np.float32([[upper_left[0], upper_left[1]],
                         [upper_right[0], upper_right[1]],
                         [down_left[0], down_left[1]],
@@ -250,18 +250,18 @@ mc = Minecraft.create()
 mc.postToChat("Initialising")
 p = mc.player
 
-# Teleportation du joueur et generation de l'emplacement des constructions
+# Téléportation du joueur et génération de l'emplacement des constructions
 p.setPos(5, 20, 5)
 mc.setBlocks(-2, -1, -2, 9, 100, 9, 155)
 mc.setBlocks(-1, 0, -1, 8, 100, 8, 0)
 mc.setBlocks(0, -1, 0, 7, -1, 7, 2)
-# int : utilise pour definir la hauteur a laquelle les blocs seront places
+# int : utilise pour définir la hauteur à laquelle les blocs seront placés
 height = 0
 
 # ---------------------------------------
-# Initialisation de la camera
+# Initialisation de la caméra
 # ---------------------------------------
-# Initialise la camera et prend les references pour rawCapture
+# Initialise la caméra et prend les références pour rawCapture
 camera = PiCamera()
 camera.resolution = (640, 480)
 rawCapture = PiRGBArray(camera, size=(640, 480))
@@ -269,12 +269,12 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 debug = -5
 
 
-def button_fct_pressed():
+def update_button():
     """Test si le bouton est appuye, relache ou en train d'etre appuye.
 modifie le flag du bouton :
-        -0  = Relâche
+        -0  = Relâché
         -1  = Appuye
-        -' ' = Juste relâche
+        -' ' = Juste relâché
 """
     global flag
     global time_flag
@@ -308,7 +308,7 @@ def onButtonPressed():
     last = first_pic
     new = new_pic
 
-    # Calcule la difference de couleur entre last et new
+    # Calcule la différence de couleur entre last et new
     (b1, g1, r1) = last[pointToWatch[0], pointToWatch[1]]
     (b2, g2, r2) = new[pointToWatch[0], pointToWatch[1]]
 
@@ -316,23 +316,25 @@ def onButtonPressed():
     g = math.fabs(int(g1)-int(g2))
     b = math.fabs(int(b1)-int(b2))
 
+    print(r, g, b)
+
     (B1, G1, R1) = cv2.split(last)
     (B2, G2, R2) = cv2.split(new)
-    # Verifie pour chaque couleur a chaque position definie
-    # par build_positions() si la difference de couleur est
-    # plus grande que le seuil de tolerance.
+    # Vérifie pour chaque couleur à chaque position définie
+    # par build_positions() si la différence de couleur est
+    # plus grande que le seuil de tolérance.
     for (mcx, mcy, x, y) in positions:
         if (checkDif(B1, B2, x, y, b) or
                 checkDif(G1, G2, x, y, g) or
                 checkDif(R1, R2, x, y, r)):
-            # Si la difference depasse la tolerance pour
+            # Si la différence dépasse la tolérance pour
             # au moins une des couleurs, place un bloc dans
-            # Minecraft aux coordonnees correspondantes.
+            # Minecraft aux coordonnées correspondantes.
             placeBlock(mcx, mcy)
     # Augmente la hauteur de 1.
     height += 1
 
-    # Cette variable sert a definir quelle construction a ete identifiee.
+    # Cette variable sert à définir quelle construction a été identifiée.
     i = 0
     for (x, y) in [garden, fountain, house]:
         if (checkDif(B1, B2, x, y, b) or
@@ -354,8 +356,8 @@ def takePicture(frame, M):
     global final_size
     # Application de l'algorithme de perspective
     frame = cv2.warpPerspective(frame, M, (final_size, final_size))
-    # Floutage pour eviter les trop gros changements de couleur.
-    frame = cv2.GaussianBlur(frame, (2, 2), 0)
+    # Floutage pour éviter les trop gros changements de couleur.
+    frame = cv2.GaussianBlur(frame, (3, 3), 0)
     return frame
 
 
@@ -408,7 +410,7 @@ Permet de verifier que les valeurs fonctionne.
         p[x-1:x+1, y-1:y+1] = (0, 0, 0)
     p[pointToWatch[0]-2:pointToWatch[0]+2,
       pointToWatch[1]-2:pointToWatch[1]+2] = (0, 255, 255)
-    # Les positions des constructions prefaites
+    # Les positions des constructions préfaites
     p[garden[0]-2:garden[0]+2, garden[1]-2:garden[1]+2] = (255, 0, 0)
     p[fountain[0]-2:fountain[0]+2, fountain[1]-2:fountain[1]+2] = (0, 255, 0)
     p[house[0]-2:house[0]+2, house[1]-2:house[1]+2] = (0, 0, 255)
@@ -428,35 +430,37 @@ Permet de verifier que les valeurs fonctionne.
     return np.hstack([f, p])
 
 
-# Boucle infinie de la camera, f est l'image capturee.
+# Boucle infinie de la caméra, f est l'image capturée.
 for f in camera.capture_continuous(rawCapture,
                                    format="bgr",
                                    use_video_port=True):
     # Prend une photo
     frame = takePicture(f.array, M)
 
-    # Permets d'eviter les 2 premieres images captees par la camera et
-    # de laisser a celle-ci le temps de s'adapter a la luminosite de la piece.
+    # Permets d'éviter les 2 premières images captées par la caméra et
+    # de laisser à celle-ci le temps de s'adapter a la luminosité de la pièce.
     debug += 1
     if new_pic is None and debug > 2:
         first_pic = frame
         new_pic = frame
         last_pic = frame
+        cv2.imwrite("images/pic_"+ str(debug)+ ".jpg", frame)
         print("Initialisation complete !")
         mc.postToChat("Initialisation complete !")
 
     # ----------------------------------------
     # Boutons
     # ----------------------------------------
-    # Mise a jour de l'etat du bouton
-    button_fct_pressed()
+    # Mise à jour de l'état du bouton
+    update_button()
 
-    # Tests pour savoir si l'on doit executer la fonction onButtonPressed(),
+    # Tests pour savoir si l'on doit exécuter la fonction onButtonPressed(),
     # la fonction reset() ou ne rien faire
     if flag == ' ':
         if not alreadyReset:
             last_pic = new_pic
             new_pic = frame
+            cv2.imwrite("images/pic_"+ str(debug)+ ".jpg", frame)
             onButtonPressed()
         alreadyReset = False
     elif flag == 1:
@@ -466,7 +470,7 @@ for f in camera.capture_continuous(rawCapture,
             reset()
             alreadyReset = True
 
-    # Affiche l'image initialisee, permets de verifier que les valeurs entrees
+    # Affiche l'image initialisée, permets de vérifier que les valeurs entrées
     # lors de la configuration sont justes.
     if new_pic is not None:
         if debug < 100:
@@ -477,7 +481,7 @@ for f in camera.capture_continuous(rawCapture,
                 p[x-1:x+1, y-1:y+1] = (0, 0, 0)
             p[pointToWatch[0]-2:pointToWatch[0]+2,
               pointToWatch[1]-2:pointToWatch[1]+2] = (0, 255, 255)
-            # Les positions des constructions prefaites.
+            # Les positions des constructions préfaites.
             p[garden[0]-2:garden[0]+2, garden[1]-2:garden[1]+2] = (255, 0, 0)
             p[fountain[0]-2:fountain[0]+2,
               fountain[1]-2:fountain[1]+2] = (0, 255, 0)
@@ -487,6 +491,6 @@ for f in camera.capture_continuous(rawCapture,
 
     rawCapture.truncate(0)
 
-    # Si la touche 'q' est pressee, arrete la boucle.
+    # Si la touche 'q' est pressée, arrête la boucle.
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break

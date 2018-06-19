@@ -4,8 +4,8 @@ import RPi.GPIO as gpio
 #rotation bouton définitf
 
 #Installations boutons
-buttonL = 14
-buttonR = 15
+buttonL = 20
+buttonR = 21
 
 
 gpio.setmode(gpio.BCM)
@@ -23,7 +23,8 @@ pwm = gpio.PWM(2, 50)
 
 
 # Code couplé bouton et Servo
-x = 5
+
+x = 10
 pwm.start(x)
 
 while True:

@@ -4,8 +4,8 @@ import RPi.GPIO as gpio
 
 
 #Installations boutons
-buttonL = 14
-buttonR = 15
+buttonL = 20
+buttonR = 21
 
 
 gpio.setmode(gpio.BCM)

@@ -28,6 +28,9 @@ import RPi.GPIO as gpio
 from time import sleep
 from mcpi.minecraft import Minecraft
 
+## variables pour lancer le test
+##test_button = True
+##test_servo = True
 
 # Définition des boutons sur le GPIO
 
@@ -43,6 +46,7 @@ buttonB = 24   # clique droit souris, connecter à pwmR
 buttonC = 20
 buttonD = 21
 
+##button_list = [buttonL, buttonR, buttonA, buttonB, buttonC, buttonD]
 
 mc = Minecraft.create()
 x, y ,z = mc.player.getPos()
@@ -78,7 +82,7 @@ def foret():
     arbre(27,8,74)
     arbre(78,4,5)
 
-def init_boutons():
+def init_buttons():
     """Initialisation des 6 boutons en pull-up."""
     gpio.setmode(gpio.BCM) # Mode du GPIO
     gpio.setup(buttonL, gpio.IN, pull_up_down=gpio.PUD_UP)
@@ -88,6 +92,14 @@ def init_boutons():
     gpio.setup(buttonC, gpio.IN, pull_up_down=gpio.PUD_UP)
     gpio.setup(buttonD, gpio.IN, pull_up_down=gpio.PUD_UP)
 
+##if test_button:
+    ##init_buttons()
+    ##while True:
+      ##  for button in button_list:
+    ##        print(gpio.input(button), end=' ')
+     ##   print()
+   ## sleep(1)
+        
 # Initialisation de l'état précédent des boutons
 L0 = False 
 R0 = False
@@ -121,7 +133,7 @@ def init_servos():
 
 ##  Code avancer buttons
 
-init_boutons()
+init_buttons()
 init_servos()
 monde_plat()
 foret()

@@ -44,17 +44,14 @@ arbre(78,4,5)
 
 ## Installation bouton
 
-<<<<<<< HEAD
 buttonL = 14
 buttonR = 15
 buttonH = 18
 buttonA = 17
 buttonS = 2
 buttonJ = 6
-=======
-# Définition des boutons sur le GPIO
->>>>>>> f5573f2d6dc31226ddda0366104d6438d42f00b1
 
+# Définition des boutons sur le GPIO
 # Boutons pour avancer bouton
 
 buttonL = 14
@@ -111,8 +108,9 @@ pwmR = gpio.PWM(13, 50)
 pwmL.start(4)# Etat de base du servo pwmL
 pwmR.start(8)#  Etat de base du servo pwmR
 
-x = 7.5
-pwm.start(x)
+
+h = 4
+pwm.start(h)
 
 ##  Code avancer buttons
 
@@ -143,7 +141,7 @@ while True:
 # clique gauche de la souris, casser une brique
 
     if not A and A0:
-            pwmL.ChangeDutyCycle(2.5)
+            pwmL.ChangeDutyCycle(2.2)
             time.sleep(0.5)
             pwmL.ChangeDutyCycle(4)
     if A and not A0:
@@ -154,7 +152,7 @@ while True:
 # clique droite de la souris, créer une brique
 
     if not B and B0:
-            pwmR.ChangeDutyCycle(11)
+            pwmR.ChangeDutyCycle(10)
             time.sleep(0.75)
             pwmR.ChangeDutyCycle(8)
             
@@ -174,9 +172,9 @@ while True:
 
 ### tire le miservo vers 12.5
 
-    if not C and C0 and x < 12.5:
-        pwm.ChangeDutyCycle(x+2.5)
-        x = x+2.5
+    if not C and C0 and h < 12.5:
+        pwm.ChangeDutyCycle(h+1.5)
+        h = h+1.5
             
     if C and not C0:
             pass 
@@ -184,9 +182,9 @@ while True:
 
     # tire le mini servo vers 2.5
     
-    if not D and D0 and x > 2.5:
-        pwm.ChangeDutyCycle(x-2.5)
-        x = x-2.5
+    if not D and D0 and h > 2.5:
+        pwm.ChangeDutyCycle(h-1.5)
+        h = h-1.5
 
     if D and not D0:
         pass		

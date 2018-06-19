@@ -7,8 +7,8 @@ from time import sleep
 
 
 #Installations boutons
-buttonL = 14
-buttonR = 15
+buttonL = 23
+buttonR = 24
 
 gpio.setmode(gpio.BCM)
 gpio.setup(buttonL, gpio.IN, pull_up_down=gpio.PUD_UP)
@@ -34,7 +34,7 @@ while True:
     right = gpio.input(buttonR)
 
     if not left and left0:
-            pwmL.ChangeDutyCycle(9.4)
+            pwmL.ChangeDutyCycle(2.3)
             time.sleep(0.5)
             pwmL.ChangeDutyCycle(5)
     if left and not left0:

@@ -17,9 +17,18 @@
 #                         1. Description du Projet                            #
 # =========================================================================== #
 """
-A completer
+Afin d'interagir avec le Rasperry Pi pour pouvoir utiliser les fonctions
+Minecraft inclues dans python, nous utilisons une baguette sur laquelle nous
+avons fixés deux cercles un rouge et un bleu. Grace à une caméra, nous
+détectons si un objet de couleur rouge ou bleu se situe dans un des cadrans
+de l’image perçue par la caméra.
 
-Minecraft et une camera enclenche
+Selon le cadran et la couleur nous définissons la fonction utilisée, parmi 4,
+Mine, Midas, House et Bridge. Il est aussi possible de choisir 2 matériaux
+différents ainsi que 2 tailles prédéfinies, petit et grand. Une fois tous les
+paramètres sélectionnés, si le Raspberry Pi détecte un objet bleu au centre
+de l’image, il lance la fonction. Si c’est un objet rouge il arrête la caméra
+et le programme.
 """
 # =========================================================================== #
 #                            2. Code du Projet                                #

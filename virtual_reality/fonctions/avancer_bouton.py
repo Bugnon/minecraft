@@ -5,7 +5,7 @@ import RPi.GPIO as gpio
 mc = Minecraft.create()
 x, y, z = mc.player.getPos()
 
-buttonL = 14
+buttonL = 21
 buttonR = 15
 
 

@@ -155,3 +155,7 @@ def bridge(x, y, z, blocktype):
         mc.setBlocks(xs+2, ys+3, zs, xs+2, ys+3, zs-l+1, block)
     else:
         mc.postToChat("It is too small")
+        
+        
+xp,yp,zp = mc.player.getTilePos()
+bridge(xp,yp,zp,"WOOD")

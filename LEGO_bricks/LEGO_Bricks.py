@@ -27,10 +27,10 @@ print("Initialising")
 # ===========================================
 
 # Sommets du carré que le programme doit observer.
-upper_left = (230, 155)
-upper_right = (450, 145)
-down_left = (236, 365)
-down_right = (452, 355)
+upper_left = (227, 146)
+upper_right = (450, 142)
+down_left = (230, 362)
+down_right = (447, 362)
 
 # Largeur de l'image sur laquelle le programme travaille.
 final_size = 150
@@ -171,10 +171,9 @@ def build_garden(x, y, z):
 
 def build_fountain(x, y, z):
     """Crée une foutaine aux coordonnees x, y, z."""
-    mc.setBlocks(x-5, y, z-5, x+1, y+1, z+1, 1)
-    mc.setBlocks(x-4, y+1, z-4, x, y+1, z, 0)
-    mc.setBlocks(x-4, y+1, z-4, x, y+1, z, 8)
-    mc.setBlocks(x-2, y+1, z-2, x-2, y+3, z-2, 1)
+    mc.setBlocks(x-3, y, z-3, x+1, y+1, z+1, 1)
+    mc.setBlocks(x-2, y+1, z-2, x, y+1, z, 8)
+    mc.setBlocks(x-1, y+1, z-1, x-1, y+3, z-1, 1)
 
 # =======================================
 # Initialisation
@@ -269,7 +268,7 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 debug = -5
 
 
-def button_fct_pressed():
+def update_button():
     """Test si le bouton est appuye, relache ou en train d'etre appuye.
 modifie le flag du bouton :
         -0  = Relâché
@@ -357,7 +356,7 @@ def takePicture(frame, M):
     # Application de l'algorithme de perspective
     frame = cv2.warpPerspective(frame, M, (final_size, final_size))
     # Floutage pour éviter les trop gros changements de couleur.
-    frame = cv2.GaussianBlur(frame, (2, 2), 0)
+    frame = cv2.GaussianBlur(frame, (3, 3), 0)
     return frame
 
 
@@ -444,6 +443,7 @@ for f in camera.capture_continuous(rawCapture,
         first_pic = frame
         new_pic = frame
         last_pic = frame
+        cv2.imwrite("images/pic_"+ str(debug)+ ".jpg", frame)
         print("Initialisation complete !")
         mc.postToChat("Initialisation complete !")
 
@@ -451,7 +451,7 @@ for f in camera.capture_continuous(rawCapture,
     # Boutons
     # ----------------------------------------
     # Mise à jour de l'état du bouton
-    button_fct_pressed()
+    update_button()
 
     # Tests pour savoir si l'on doit exécuter la fonction onButtonPressed(),
     # la fonction reset() ou ne rien faire
@@ -459,6 +459,7 @@ for f in camera.capture_continuous(rawCapture,
         if not alreadyReset:
             last_pic = new_pic
             new_pic = frame
+            cv2.imwrite("images/pic_"+ str(debug)+ ".jpg", frame)
             onButtonPressed()
         alreadyReset = False
     elif flag == 1:

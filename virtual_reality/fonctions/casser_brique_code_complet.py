@@ -5,6 +5,7 @@ from time import sleep
 
 buttonA = 23# clique gauche souris, connecter à pwmL
 buttonB = 24# clique droit souris, connecter à pwmR
+
 gpio.setmode(gpio.BCM)
 gpio.setup(buttonA, gpio.IN, pull_up_down=gpio.PUD_UP)    
 gpio.setup(buttonB, gpio.IN, pull_up_down=gpio.PUD_UP)

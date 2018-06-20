@@ -316,8 +316,6 @@ def onButtonPressed():
     g = math.fabs(int(g1)-int(g2))
     b = math.fabs(int(b1)-int(b2))
 
-    print(r, g, b)
-
     (B1, G1, R1) = cv2.split(last)
     (B2, G2, R2) = cv2.split(new)
     # Verifie pour chaque couleur a chaque position definie

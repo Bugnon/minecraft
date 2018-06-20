@@ -119,20 +119,18 @@ def init_servos():
     x = 7.5
     pwm.start(x)
 
-##  Code avancer buttons
+## Initialisation
 
 init_boutons()
 init_servos()
 monde_plat()
 foret()
 
-t0 = time.time()
+
 
 while True:
-    sleep(0.05)
-##    t = time.time()
-##    print(t-t0)
-##    t0 = t
+    
+    ##  Code avancer buttons
     
     L = gpio.input(buttonL)
     R = gpio.input(buttonR)

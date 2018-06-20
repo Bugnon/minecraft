@@ -44,7 +44,16 @@ arbre(78,4,5)
 
 ## Installation bouton
 
+<<<<<<< HEAD
+buttonL = 14
+buttonR = 15
+buttonH = 18
+buttonA = 17
+buttonS = 2
+buttonJ = 6
+=======
 # Définition des boutons sur le GPIO
+>>>>>>> f5573f2d6dc31226ddda0366104d6438d42f00b1
 
 # Boutons pour avancer bouton
 

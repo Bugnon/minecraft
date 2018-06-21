@@ -486,12 +486,17 @@ mais un trou)
 """
     xp, yp, zp = mc.player.getTilePos()
     if p1 is True:
-        size = 80
+        size = 30
 
     if p1 is False:
         size = 15
+        
+    if p2 is True:
+        direction = "North"
 
-    Mine.Mine(xp, yp, zp, "North", 15)
+    if p2 is False:
+        direction = "South"
+    Mine.Mine(xp, yp, zp, direction, size)
 ##    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Mine.mp3')
 
 
@@ -508,10 +513,10 @@ p1, p2: bool
         s = 5
 
     if p2 is True:
-        id_block = 57
+        id_block = 46, 1  # TNT active
 
     if p2 is False:
-        id_block = 41
+        id_block = 41  # Or
 
     Midas.Midascube(xp, yp, zp, s, id_block)
 ##    os('omxplayer -o local Desktop/minecraft/Magic_Wand/songs/Midas.mp3')

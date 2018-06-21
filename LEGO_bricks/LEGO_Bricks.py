@@ -350,7 +350,7 @@ def onButtonPressed():
 
 
 def takePicture(frame, M):
-    """Applique les transformations sur l'image, voir frame_data
+    """Applique les transformations sur l'image
 """
     global final_size
     # Application de l'algorithme de perspective

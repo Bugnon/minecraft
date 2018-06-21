@@ -443,7 +443,6 @@ for f in camera.capture_continuous(rawCapture,
         first_pic = frame
         new_pic = frame
         last_pic = frame
-        cv2.imwrite("images/pic_"+ str(debug)+ ".jpg", frame)
         print("Initialisation complete !")
         mc.postToChat("Initialisation complete !")
 
@@ -459,7 +458,6 @@ for f in camera.capture_continuous(rawCapture,
         if not alreadyReset:
             last_pic = new_pic
             new_pic = frame
-            cv2.imwrite("images/pic_"+ str(debug)+ ".jpg", frame)
             onButtonPressed()
         alreadyReset = False
     elif flag == 1:

@@ -44,8 +44,19 @@ arbre(78,4,5)
 
 ## Installation bouton
 
+<<<<<<< HEAD
 # Définition des boutons sur le GPIO
 
+=======
+buttonL = 14
+buttonR = 15
+buttonH = 18
+buttonA = 17
+buttonS = 2
+buttonJ = 6
+
+# Définition des boutons sur le GPIO
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
 # Boutons pour avancer bouton
 
 buttonL = 14
@@ -70,9 +81,15 @@ gpio.setup(buttonA, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonB, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonC, gpio.IN, pull_up_down=gpio.PUD_UP)
 gpio.setup(buttonD, gpio.IN, pull_up_down=gpio.PUD_UP)
+<<<<<<< HEAD
 
 # Etat lorsque les boutons ne sont pas appuyés
 
+=======
+
+# Etat lorsque les boutons ne sont pas appuyés
+
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
 L0 = False 
 R0 = False
 A0 = False 
@@ -102,8 +119,14 @@ pwmR = gpio.PWM(13, 50)
 pwmL.start(4)# Etat de base du servo pwmL
 pwmR.start(8)#  Etat de base du servo pwmR
 
+<<<<<<< HEAD
 x = 7.5
 pwm.start(x)
+=======
+
+h = 4
+pwm.start(h)
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
 
 ##  Code avancer buttons
 
@@ -134,7 +157,11 @@ while True:
 # clique gauche de la souris, casser une brique
 
     if not A and A0:
+<<<<<<< HEAD
             pwmL.ChangeDutyCycle(2.5)
+=======
+            pwmL.ChangeDutyCycle(2.2)
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
             time.sleep(0.5)
             pwmL.ChangeDutyCycle(4)
     if A and not A0:
@@ -145,7 +172,11 @@ while True:
 # clique droite de la souris, créer une brique
 
     if not B and B0:
+<<<<<<< HEAD
             pwmR.ChangeDutyCycle(11)
+=======
+            pwmR.ChangeDutyCycle(10)
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
             time.sleep(0.75)
             pwmR.ChangeDutyCycle(8)
             
@@ -165,9 +196,15 @@ while True:
 
 ### tire le miservo vers 12.5
 
+<<<<<<< HEAD
     if not C and C0 and x < 12.5:
         pwm.ChangeDutyCycle(x+2.5)
         x = x+2.5
+=======
+    if not C and C0 and h < 12.5:
+        pwm.ChangeDutyCycle(h+1.5)
+        h = h+1.5
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
             
     if C and not C0:
             pass 
@@ -175,9 +212,15 @@ while True:
 
     # tire le mini servo vers 2.5
     
+<<<<<<< HEAD
     if not D and D0 and x > 2.5:
         pwm.ChangeDutyCycle(x-2.5)
         x = x-2.5
+=======
+    if not D and D0 and h > 2.5:
+        pwm.ChangeDutyCycle(h-1.5)
+        h = h-1.5
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
 
     if D and not D0:
         pass		

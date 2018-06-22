@@ -5,8 +5,13 @@ from time import sleep
 
 
 #Installations boutons
+<<<<<<< HEAD
 buttonL = 14
 buttonR = 15
+=======
+buttonL = 23
+buttonR = 24
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
 
 gpio.setmode(gpio.BCM)
 gpio.setup(buttonL, gpio.IN, pull_up_down=gpio.PUD_UP)

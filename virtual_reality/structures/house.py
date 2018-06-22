@@ -13,7 +13,7 @@ def murs_intérieurs ():
     mc.setBlocks(x+7, y, z+7, x+7, y+5, z+12, planches)
 
 def portes():
-    mc.setBlocks(x+4,y,z+2,x+5,y+1,z+2, 0)
+    mc.setBlocks(x+4,y,z+2,x+5,y+2,z+2, 0)
     mc.setBlocks(x+4, y, z+7, x+4, y+1, z+7, 0)
     mc.setBlocks(x+9, y, z+7, x+9, y+1, z+7, 0)
 

@@ -5,15 +5,23 @@ x, y ,z = mc.player.getPos()
 
 def terrain():
     '''Cree une surface simple 15 *15'''
+<<<<<<< HEAD
     mc.setBlocks(x ,y-1 , z ,x+300 ,y-300,z+300 ,3 )
     mc.setBlocks(x ,y , z ,x+300 ,y+150,z+300 ,0 )
     mc.setBlocks(x ,y-1 , z ,x+300 ,y-1,z+300 ,2 )
     mc.setBlocks(x+1 ,y , z+1 ,x+300 ,y,z+300 ,0 )
+=======
+    mc.setBlocks(x ,y-1 , z ,x+15 ,y-15,z+15 ,3 )
+    mc.setBlocks(x ,y , z ,x+15 ,y,z+15 ,1 )
+    mc.setBlocks(x ,y-1 , z ,x+15 ,y-1, z + 15 ,2 )
+    mc.setBlocks(x+1 ,y , z+1 ,x+14,y,z+14 ,0 )
+    
+>>>>>>> eb4f264dfacb66a19cdfaddbf30a08e50b2f2a5a
     
     
 def cascade():
     mc.setBlocks(x+9 ,y , z+10 ,x+15 ,y+10,z+15 ,2 )
-    mc.setBlocks(x+11 ,y+9 , z+10 ,x+13 ,y+9,z+14 ,8 )#eau
+    mc.setBlocks(x+11 ,y+9 , z+10 ,x+13 ,y+9,z+14 , 8)#eau
     mc.setBlocks(x+9 ,y-1 , z+7 ,x+14 ,y-1,z+9 ,0 )
     mc.setBlocks(x+9 ,y-1 , z+5 ,x+14 ,y-1,z+6 ,12 )
     mc.setBlocks(x+8 ,y-1 , z+5 ,x+7 ,y-1,z+9 ,12 )
